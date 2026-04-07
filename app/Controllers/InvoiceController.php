@@ -7,10 +7,13 @@ namespace DoubleE\Controllers;
 use DoubleE\Core\Response;
 use DoubleE\Models\Account;
 use DoubleE\Models\Contact;
+use DoubleE\Models\ContactAddress;
 use DoubleE\Models\Invoice;
 use DoubleE\Models\InvoiceLine;
 use DoubleE\Models\PaymentAllocation;
+use DoubleE\Models\Setting;
 use DoubleE\Services\InvoiceService;
+use DoubleE\Services\PdfService;
 use DoubleE\Core\Auth;
 
 class InvoiceController extends BaseController
@@ -266,6 +269,48 @@ class InvoiceController extends BaseController
             'canPost'     => $canPost,
             'canVoid'     => $canVoid,
         ]);
+    }
+
+    /**
+     * Download invoice as PDF.
+     */
+    public function pdf(string $id): Response
+    {
+        Auth::getInstance()->requirePermission('invoices.view');
+
+        $invoice = $this->invoiceModel->getWithLines((int) $id);
+
+        if ($invoice === null) {
+            $this->flash('error', 'Invoice not found.');
+            return $this->redirect('/invoices');
+        }
+
+        $contact = $this->contactModel->find((int) $invoice['contact_id']);
+        $addresses = (new ContactAddress())->getByContact((int) $invoice['contact_id']);
+
+        $company = [
+            'name'        => Setting::get('company_name', 'Double-E Accounting'),
+            'address'     => Setting::get('address', ''),
+            'city'        => Setting::get('city', ''),
+            'state'       => Setting::get('state', ''),
+            'postal_code' => Setting::get('postal_code', ''),
+            'phone'       => Setting::get('phone', ''),
+            'email'       => Setting::get('email', ''),
+        ];
+
+        $pdfService = new PdfService();
+        $html = $pdfService->renderReportPdf('pdf/invoice', [
+            'invoice'   => $invoice,
+            'contact'   => $contact,
+            'address'   => $addresses[0] ?? null,
+            'company'   => $company,
+            'pageTitle' => $invoice['document_number'],
+        ]);
+
+        $pdfService->generatePdf($html, $invoice['document_number'] . '.pdf');
+
+        // generatePdf outputs and exits, but if it falls through:
+        return $this->response;
     }
 
     /**

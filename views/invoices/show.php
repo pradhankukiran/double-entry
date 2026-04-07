@@ -32,6 +32,9 @@ $lines    = $invoice['lines'] ?? [];
         <a href="/invoices" class="btn btn-outline-secondary" style="border-radius: 0;">
             <i class="bi bi-arrow-left me-1"></i> Back
         </a>
+        <a href="/invoices/<?= (int) $invoice['id'] ?>/pdf" class="btn btn-sm btn-outline-secondary" target="_blank" style="border-radius: 0;">
+            <i class="bi bi-file-earmark-pdf me-1"></i> Download PDF
+        </a>
         <?php if ($isDraft): ?>
             <?php if ($canPost ?? false): ?>
             <form method="POST" action="/invoices/<?= (int) $invoice['id'] ?>/post" class="d-inline">
