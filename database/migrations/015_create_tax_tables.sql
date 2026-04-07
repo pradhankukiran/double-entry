@@ -1,0 +1,29 @@
+CREATE TABLE tax_rates (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    code VARCHAR(20) NOT NULL UNIQUE,
+    rate DECIMAL(7,4) NOT NULL,
+    tax_account_id INT UNSIGNED NOT NULL,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_tr_active (is_active),
+    FOREIGN KEY (tax_account_id) REFERENCES accounts(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE tax_groups (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    code VARCHAR(20) NOT NULL UNIQUE,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE tax_group_rates (
+    tax_group_id INT UNSIGNED NOT NULL,
+    tax_rate_id INT UNSIGNED NOT NULL,
+    apply_order SMALLINT NOT NULL DEFAULT 1,
+    PRIMARY KEY (tax_group_id, tax_rate_id),
+    FOREIGN KEY (tax_group_id) REFERENCES tax_groups(id) ON DELETE CASCADE,
+    FOREIGN KEY (tax_rate_id) REFERENCES tax_rates(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
