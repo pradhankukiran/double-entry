@@ -8,7 +8,14 @@
     },
     "autoload": {
         "psr-4": {
-            "DoubleE\\": ["app/", "core/"]
+            "DoubleE\\Controllers\\": "app/Controllers/",
+            "DoubleE\\Models\\": "app/Models/",
+            "DoubleE\\Services\\": "app/Services/",
+            "DoubleE\\Middleware\\": "app/Middleware/",
+            "DoubleE\\Validators\\": "app/Validators/",
+            "DoubleE\\Exceptions\\": "app/Exceptions/",
+            "DoubleE\\Helpers\\": "app/Helpers/",
+            "DoubleE\\Core\\": "core/"
         }
     },
     "config": {

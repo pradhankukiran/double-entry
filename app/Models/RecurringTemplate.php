@@ -19,7 +19,7 @@ class RecurringTemplate extends BaseModel
      */
     public function getAll(bool $activeOnly = true): array
     {
-        $sql = "SELECT rt.*, u.display_name AS created_by_name
+        $sql = "SELECT rt.*, CONCAT(u.first_name, ' ', u.last_name) AS created_by_name
                 FROM {$this->table} rt
                 INNER JOIN users u ON u.id = rt.created_by";
 

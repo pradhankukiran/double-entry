@@ -1,0 +1,32 @@
+services:
+  app:
+    build: .
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: php -S 0.0.0.0:8080 -t public
+    environment:
+      - APP_ENV=development
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: double_e_pass
+      MYSQL_DATABASE: double_e
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  dbdata:

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DoubleE\Controllers;
 
 use DoubleE\Core\Response;
-use DoubleE\Services\Auth;
+use DoubleE\Core\Auth;
 
 class AuthController extends BaseController
 {

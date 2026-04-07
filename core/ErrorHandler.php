@@ -77,10 +77,8 @@ class ErrorHandler
             return 403;
         }
 
-        return match (true) {
-            $e->getCode() >= 400 && $e->getCode() < 600 => $e->getCode(),
-            default => 500,
-        };
+        $code = (int) $e->getCode();
+        return ($code >= 400 && $code < 600) ? $code : 500;
     }
 
     private function renderDebugPage(\Throwable $e): void

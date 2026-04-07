@@ -13,7 +13,7 @@ class BankReconciliation extends BaseModel
      */
     public function getByBankAccount(int $bankAccountId): array
     {
-        $sql = "SELECT br.*, u.full_name AS reconciled_by_name
+        $sql = "SELECT br.*, CONCAT(u.first_name, ' ', u.last_name) AS reconciled_by_name
                 FROM {$this->table} br
                 INNER JOIN users u ON u.id = br.reconciled_by
                 WHERE br.bank_account_id = ?

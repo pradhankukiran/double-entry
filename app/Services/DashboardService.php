@@ -158,13 +158,13 @@ class DashboardService
     {
         $sql = "SELECT je.id, je.entry_number, je.entry_date, je.description,
                        je.status, je.created_at,
-                       u.display_name AS created_by_name,
+                       CONCAT(u.first_name, ' ', u.last_name) AS created_by_name,
                        COALESCE(SUM(jel.debit), 0) AS total_amount
                 FROM journal_entries je
                 INNER JOIN users u ON u.id = je.created_by
                 LEFT JOIN journal_entry_lines jel ON jel.journal_entry_id = je.id
                 GROUP BY je.id, je.entry_number, je.entry_date, je.description,
-                         je.status, je.created_at, u.display_name
+                         je.status, je.created_at, u.first_name, u.last_name
                 ORDER BY je.created_at DESC
                 LIMIT ?";
 

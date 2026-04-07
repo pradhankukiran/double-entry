@@ -24,10 +24,9 @@ class AuditLog extends BaseModel
         $db = Database::getInstance();
         $userId = Session::get('user_id');
         $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
-        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
-        $sql = "INSERT INTO audit_log (user_id, action, entity_type, entity_id, old_values, new_values, ip_address, user_agent, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+        $sql = "INSERT INTO audit_log (user_id, action, entity_type, entity_id, old_values, new_values, ip_address, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
 
         $db->exec($sql, [
             $userId,
@@ -37,7 +36,6 @@ class AuditLog extends BaseModel
             $oldValues !== null ? json_encode($oldValues, JSON_THROW_ON_ERROR) : null,
             $newValues !== null ? json_encode($newValues, JSON_THROW_ON_ERROR) : null,
             $ip,
-            $userAgent,
         ]);
     }
 

@@ -6,7 +6,7 @@ namespace DoubleE\Middleware;
 
 use DoubleE\Core\Request;
 use DoubleE\Core\Response;
-use DoubleE\Services\Auth;
+use DoubleE\Core\Auth;
 
 class AuthMiddleware
 {

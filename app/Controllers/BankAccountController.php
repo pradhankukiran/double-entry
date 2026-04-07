@@ -28,7 +28,7 @@ class BankAccountController extends BaseController
      */
     public function index(): Response
     {
-        $accounts = $this->bankAccountModel->getAllWithGlAccount();
+        $accounts = $this->bankAccountModel->getAll();
 
         return $this->render('banking/accounts/index', [
             'pageTitle' => 'Bank Accounts',

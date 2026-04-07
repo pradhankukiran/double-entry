@@ -32,7 +32,7 @@ class TaxController extends BaseController
     public function index(): Response
     {
         $rates = $this->taxRateModel->getAll();
-        $groups = $this->taxGroupModel->getAllWithRates();
+        $groups = $this->taxGroupModel->getAll();
 
         return $this->render('tax/index', [
             'pageTitle' => 'Tax Management',

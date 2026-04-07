@@ -6,7 +6,7 @@ namespace DoubleE\Controllers;
 
 use DoubleE\Core\Response;
 use DoubleE\Models\User;
-use DoubleE\Services\Auth;
+use DoubleE\Core\Auth;
 
 class UserController extends BaseController
 {

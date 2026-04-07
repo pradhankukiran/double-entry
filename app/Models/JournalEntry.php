@@ -18,7 +18,7 @@ class JournalEntry extends BaseModel
     public function getAll(array $filters = []): array
     {
         $sql = "SELECT je.*,
-                    u.full_name AS created_by_name,
+                    CONCAT(u.first_name, ' ', u.last_name) AS created_by_name,
                     COALESCE(totals.total_debit, 0) AS total_debit,
                     COALESCE(totals.total_credit, 0) AS total_credit
                 FROM {$this->table} je

@@ -36,7 +36,10 @@ class LedgerController extends BaseController
             $filters['date_to'] = $dateTo;
         }
 
-        $entries = $this->ledgerService->getGeneralLedger($filters);
+        $entries = $this->ledgerService->getGeneralLedger(
+            $dateFrom !== '' ? $dateFrom : null,
+            $dateTo !== '' ? $dateTo : null
+        );
 
         return $this->render('ledger/general', [
             'pageTitle' => 'General Ledger',

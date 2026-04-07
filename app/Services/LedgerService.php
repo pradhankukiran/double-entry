@@ -41,7 +41,7 @@ class LedgerService
 
         // Build the query with optional date filters
         $sql = "SELECT jel.id, jel.account_id, jel.debit, jel.credit, jel.description,
-                       jel.line_number,
+                       jel.line_order,
                        je.id AS journal_entry_id, je.entry_number, je.entry_date,
                        je.description AS entry_description, je.status
                 FROM journal_entry_lines jel
@@ -100,7 +100,7 @@ class LedgerService
         $sql = "SELECT je.id, je.entry_number, je.entry_date, je.description,
                        je.reference, je.status, je.posted_at,
                        jel.id AS line_id, jel.account_id, jel.debit, jel.credit,
-                       jel.description AS line_description, jel.line_number,
+                       jel.description AS line_description, jel.line_order,
                        a.account_number, a.name AS account_name
                 FROM journal_entries je
                 INNER JOIN journal_entry_lines jel ON jel.journal_entry_id = je.id
@@ -119,7 +119,7 @@ class LedgerService
             $params[] = $toDate;
         }
 
-        $sql .= " ORDER BY je.entry_date ASC, je.id ASC, jel.line_number ASC";
+        $sql .= " ORDER BY je.entry_date ASC, je.id ASC, jel.line_order ASC";
 
         $rows = $this->db->query($sql, $params);
 

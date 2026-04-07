@@ -22,7 +22,7 @@ class SettingsController extends BaseController
      */
     public function index(): Response
     {
-        $settings = $this->settingModel->getAllKeyed();
+        $settings = $this->settingModel->getAll();
 
         return $this->render('settings/index', [
             'pageTitle' => 'Settings',
