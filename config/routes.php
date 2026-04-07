@@ -44,4 +44,12 @@ return [
     // General Ledger
     ['method' => 'GET', 'path' => '/ledger', 'controller' => 'LedgerController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
     ['method' => 'GET', 'path' => '/ledger/account/{id}', 'controller' => 'LedgerController', 'action' => 'account', 'middleware' => ['AuthMiddleware']],
+
+    // Reports
+    ['method' => 'GET', 'path' => '/reports', 'controller' => 'ReportController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/reports/trial-balance', 'controller' => 'ReportController', 'action' => 'trialBalance', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/reports/balance-sheet', 'controller' => 'ReportController', 'action' => 'balanceSheet', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/reports/income-statement', 'controller' => 'ReportController', 'action' => 'incomeStatement', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/reports/cash-flow', 'controller' => 'ReportController', 'action' => 'cashFlow', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/reports/{report}/pdf', 'controller' => 'ReportController', 'action' => 'exportPdf', 'middleware' => ['AuthMiddleware']],
 ];
