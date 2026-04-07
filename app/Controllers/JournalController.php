@@ -9,6 +9,7 @@ use DoubleE\Models\Account;
 use DoubleE\Models\JournalEntry;
 use DoubleE\Services\JournalEntryService;
 use DoubleE\Core\Auth;
+use DoubleE\Helpers\Pagination;
 
 class JournalController extends BaseController
 {
@@ -53,15 +54,23 @@ class JournalController extends BaseController
             $filters['search'] = $search;
         }
 
+        $page = max(1, (int) $this->request->get('page', 1));
+        $totalItems = $this->journalModel->countAll($filters);
+        $pagination = Pagination::paginate($totalItems, $page, 25, '/journal');
+
+        $filters['limit'] = $pagination['per_page'];
+        $filters['offset'] = $pagination['offset'];
         $entries = $this->journalModel->getAll($filters);
 
         return $this->render('journal/index', [
-            'pageTitle' => 'Journal Entries',
-            'entries'   => $entries,
-            'filters'   => $filters,
-            'canCreate' => $canCreate,
-            'canPost'   => $canPost,
-            'canVoid'   => $canVoid,
+            'pageTitle'   => 'Journal Entries',
+            'entries'     => $entries,
+            'filters'     => $filters,
+            'pagination'  => $pagination,
+            'canCreate'   => $canCreate,
+            'canPost'     => $canPost,
+            'canVoid'     => $canVoid,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Journal Entries']],
         ]);
     }
 
@@ -75,8 +84,9 @@ class JournalController extends BaseController
         $accounts = $this->accountModel->getLeafAccounts();
 
         return $this->render('journal/create', [
-            'pageTitle' => 'New Journal Entry',
-            'accounts'  => $accounts,
+            'pageTitle'   => 'New Journal Entry',
+            'accounts'    => $accounts,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Journal Entries', 'url' => '/journal'], ['label' => 'New Entry']],
         ]);
     }
 
@@ -214,6 +224,7 @@ class JournalController extends BaseController
             'canCreate'      => $canCreate,
             'canPost'        => $canPost,
             'canVoid'        => $canVoid,
+            'breadcrumbs'    => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Journal Entries', 'url' => '/journal'], ['label' => $entry['entry_number']]],
         ]);
     }
 

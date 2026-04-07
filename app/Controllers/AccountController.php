@@ -45,6 +45,7 @@ class AccountController extends BaseController
             'accountTypes' => $accountTypes,
             'canCreate'    => $canCreate,
             'canEdit'      => $canEdit,
+            'breadcrumbs'  => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Chart of Accounts']],
         ]);
     }
 
@@ -64,6 +65,7 @@ class AccountController extends BaseController
             'types'         => $types,
             'subtypes'      => $subtypes,
             'parentOptions' => $parentOptions,
+            'breadcrumbs'   => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Chart of Accounts', 'url' => '/accounts'], ['label' => 'New Account']],
         ]);
     }
 
@@ -162,14 +164,15 @@ class AccountController extends BaseController
         $children = $this->accountModel->getChildren((int) $account['id']);
 
         return $this->render('accounts/show', [
-            'pageTitle' => $account['account_number'] . ' - ' . $account['name'],
-            'account'   => $account,
-            'type'      => $type,
-            'subtype'   => $subtype,
-            'parent'    => $parent,
-            'children'  => $children,
-            'canCreate' => $canCreate,
-            'canEdit'   => $canEdit,
+            'pageTitle'   => $account['account_number'] . ' - ' . $account['name'],
+            'account'     => $account,
+            'type'        => $type,
+            'subtype'     => $subtype,
+            'parent'      => $parent,
+            'children'    => $children,
+            'canCreate'   => $canCreate,
+            'canEdit'     => $canEdit,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Chart of Accounts', 'url' => '/accounts'], ['label' => $account['name']]],
         ]);
     }
 
@@ -197,6 +200,7 @@ class AccountController extends BaseController
             'types'         => $types,
             'subtypes'      => $subtypes,
             'parentOptions' => $parentOptions,
+            'breadcrumbs'   => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Chart of Accounts', 'url' => '/accounts'], ['label' => $account['name'], 'url' => '/accounts/' . $id], ['label' => 'Edit']],
         ]);
     }
 

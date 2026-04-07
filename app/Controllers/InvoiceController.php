@@ -15,6 +15,7 @@ use DoubleE\Models\Setting;
 use DoubleE\Services\InvoiceService;
 use DoubleE\Services\PdfService;
 use DoubleE\Core\Auth;
+use DoubleE\Helpers\Pagination;
 
 class InvoiceController extends BaseController
 {
@@ -62,18 +63,26 @@ class InvoiceController extends BaseController
             $filters['contact_id'] = $contactId;
         }
 
+        $page = max(1, (int) $this->request->get('page', 1));
+        $totalItems = $this->invoiceModel->countAll($filters);
+        $pagination = Pagination::paginate($totalItems, $page, 25, '/invoices');
+
+        $filters['limit'] = $pagination['per_page'];
+        $filters['offset'] = $pagination['offset'];
         $invoices = $this->invoiceModel->getAll($filters);
         $contacts = $this->contactModel->getAll(true);
 
         return $this->render('invoices/index', [
-            'pageTitle' => 'Invoices',
-            'invoices'  => $invoices,
-            'contacts'  => $contacts,
-            'filters'   => $filters,
-            'canCreate' => $canCreate,
-            'canEdit'   => $canEdit,
-            'canPost'   => $canPost,
-            'canVoid'   => $canVoid,
+            'pageTitle'   => 'Invoices',
+            'invoices'    => $invoices,
+            'contacts'    => $contacts,
+            'filters'     => $filters,
+            'pagination'  => $pagination,
+            'canCreate'   => $canCreate,
+            'canEdit'     => $canEdit,
+            'canPost'     => $canPost,
+            'canVoid'     => $canVoid,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Invoices']],
         ]);
     }
 
@@ -268,6 +277,7 @@ class InvoiceController extends BaseController
             'canEdit'     => $canEdit,
             'canPost'     => $canPost,
             'canVoid'     => $canVoid,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Invoices', 'url' => '/invoices'], ['label' => $invoice['document_number']]],
         ]);
     }
 

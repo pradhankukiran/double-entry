@@ -45,9 +45,10 @@ class LedgerController extends BaseController
         );
 
         return $this->render('ledger/general', [
-            'pageTitle' => 'General Ledger',
-            'entries'   => $entries,
-            'filters'   => $filters,
+            'pageTitle'   => 'General Ledger',
+            'entries'     => $entries,
+            'filters'     => $filters,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'General Ledger']],
         ]);
     }
 
@@ -79,10 +80,11 @@ class LedgerController extends BaseController
         $ledger = $this->ledgerService->getAccountLedger((int) $id, $filters);
 
         return $this->render('ledger/account', [
-            'pageTitle' => $account['account_number'] . ' - ' . $account['name'] . ' | Ledger',
-            'account'   => $account,
-            'ledger'    => $ledger,
-            'filters'   => $filters,
+            'pageTitle'   => $account['account_number'] . ' - ' . $account['name'] . ' | Ledger',
+            'account'     => $account,
+            'ledger'      => $ledger,
+            'filters'     => $filters,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'General Ledger', 'url' => '/ledger'], ['label' => $account['name']]],
         ]);
     }
 }

@@ -30,7 +30,8 @@ class ReportController extends BaseController
         Auth::getInstance()->requirePermission('reports.view');
 
         return $this->render('reports/index', [
-            'pageTitle' => 'Financial Reports',
+            'pageTitle'   => 'Financial Reports',
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Reports']],
         ]);
     }
 
@@ -50,9 +51,10 @@ class ReportController extends BaseController
         $report = $this->reportService->generateTrialBalance($asOfDate);
 
         return $this->render('reports/trial-balance', [
-            'pageTitle' => 'Trial Balance',
-            'report'    => $report,
-            'asOfDate'  => $asOfDate,
+            'pageTitle'   => 'Trial Balance',
+            'report'      => $report,
+            'asOfDate'    => $asOfDate,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Reports', 'url' => '/reports'], ['label' => 'Trial Balance']],
         ]);
     }
 
@@ -72,9 +74,10 @@ class ReportController extends BaseController
         $report = $this->reportService->generateBalanceSheet($asOfDate);
 
         return $this->render('reports/balance-sheet', [
-            'pageTitle' => 'Balance Sheet',
-            'report'    => $report,
-            'asOfDate'  => $asOfDate,
+            'pageTitle'   => 'Balance Sheet',
+            'report'      => $report,
+            'asOfDate'    => $asOfDate,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Reports', 'url' => '/reports'], ['label' => 'Balance Sheet']],
         ]);
     }
 
@@ -98,10 +101,11 @@ class ReportController extends BaseController
         $report = $this->reportService->generateIncomeStatement($fromDate, $toDate);
 
         return $this->render('reports/income-statement', [
-            'pageTitle' => 'Income Statement',
-            'report'    => $report,
-            'fromDate'  => $fromDate,
-            'toDate'    => $toDate,
+            'pageTitle'   => 'Income Statement',
+            'report'      => $report,
+            'fromDate'    => $fromDate,
+            'toDate'      => $toDate,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Reports', 'url' => '/reports'], ['label' => 'Income Statement']],
         ]);
     }
 
@@ -125,10 +129,11 @@ class ReportController extends BaseController
         $report = $this->reportService->generateCashFlowStatement($fromDate, $toDate);
 
         return $this->render('reports/cash-flow', [
-            'pageTitle' => 'Cash Flow Statement',
-            'report'    => $report,
-            'fromDate'  => $fromDate,
-            'toDate'    => $toDate,
+            'pageTitle'   => 'Cash Flow Statement',
+            'report'      => $report,
+            'fromDate'    => $fromDate,
+            'toDate'      => $toDate,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Reports', 'url' => '/reports'], ['label' => 'Cash Flow Statement']],
         ]);
     }
 
@@ -149,9 +154,10 @@ class ReportController extends BaseController
         $aging = $invoiceService->getAgingReport($type);
 
         return $this->render('reports/aging', [
-            'pageTitle' => ($type === 'invoice' ? 'AR' : 'AP') . ' Aging Report',
-            'aging'     => $aging,
-            'type'      => $type,
+            'pageTitle'   => ($type === 'invoice' ? 'AR' : 'AP') . ' Aging Report',
+            'aging'       => $aging,
+            'type'        => $type,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Reports', 'url' => '/reports'], ['label' => 'Aging Report']],
         ]);
     }
 

@@ -10,6 +10,7 @@ use DoubleE\Models\ContactAddress;
 use DoubleE\Models\Invoice;
 use DoubleE\Models\Payment;
 use DoubleE\Core\Auth;
+use DoubleE\Helpers\Pagination;
 
 class ContactController extends BaseController
 {
@@ -38,7 +39,12 @@ class ContactController extends BaseController
 
         $type = trim((string) $this->request->get('type', ''));
 
-        $contacts = $this->contactModel->getAll(false, $type !== '' ? $type : null);
+        $typeFilter = $type !== '' ? $type : null;
+        $page = max(1, (int) $this->request->get('page', 1));
+        $totalItems = $this->contactModel->countAll(false, $typeFilter);
+        $pagination = Pagination::paginate($totalItems, $page, 25, '/contacts');
+
+        $contacts = $this->contactModel->getAll(false, $typeFilter, $pagination['per_page'], $pagination['offset']);
 
         // Attach outstanding balance to each contact
         foreach ($contacts as &$contact) {
@@ -47,11 +53,13 @@ class ContactController extends BaseController
         unset($contact);
 
         return $this->render('contacts/index', [
-            'pageTitle' => 'Contacts',
-            'contacts'   => $contacts,
+            'pageTitle'   => 'Contacts',
+            'contacts'    => $contacts,
             'typeFilter'  => $type,
+            'pagination'  => $pagination,
             'canCreate'   => $canCreate,
             'canEdit'     => $canEdit,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Contacts']],
         ]);
     }
 
@@ -63,7 +71,8 @@ class ContactController extends BaseController
         Auth::getInstance()->requirePermission('invoices.create');
 
         return $this->render('contacts/create', [
-            'pageTitle' => 'New Contact',
+            'pageTitle'   => 'New Contact',
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Contacts', 'url' => '/contacts'], ['label' => 'New Contact']],
         ]);
     }
 
@@ -178,6 +187,7 @@ class ContactController extends BaseController
             'outstanding' => $outstanding,
             'canCreate'   => $canCreate,
             'canEdit'     => $canEdit,
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/'], ['label' => 'Contacts', 'url' => '/contacts'], ['label' => $contact['display_name']]],
         ]);
     }
 
