@@ -14,7 +14,7 @@
   <img src="https://img.shields.io/badge/Apache-2.4-D22128?style=flat-square&logo=apache&logoColor=white" alt="Apache 2.4">
   <img src="https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=flat-square&logo=bootstrap&logoColor=white" alt="Bootstrap 5.3">
   <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker">
-  <img src="https://img.shields.io/badge/License-Proprietary-333?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/License-Apache_2.0-D22128?style=flat-square&logo=apache&logoColor=white" alt="License">
 </p>
 
 <p align="center">
@@ -231,4 +231,4 @@ docker compose down -v     # Stop and remove data volume
 
 ## License
 
-Proprietary. All rights reserved.
+Licensed under the [Apache License 2.0](LICENSE).

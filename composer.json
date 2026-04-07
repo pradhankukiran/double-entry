@@ -2,7 +2,7 @@
     "name": "double-e/accounting",
     "description": "Production-grade double-entry accounting platform",
     "type": "project",
-    "license": "proprietary",
+    "license": "Apache-2.0",
     "require": {
         "php": ">=8.2"
     },
