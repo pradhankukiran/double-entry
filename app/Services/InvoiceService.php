@@ -333,7 +333,7 @@ class InvoiceService
     {
         $today = date('Y-m-d');
 
-        $sql = "SELECT i.*, c.name AS contact_name
+        $sql = "SELECT i.*, c.display_name AS contact_name
                 FROM invoices i
                 INNER JOIN contacts c ON c.id = i.contact_id
                 WHERE i.document_type = ?

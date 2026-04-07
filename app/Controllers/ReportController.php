@@ -6,6 +6,7 @@ namespace DoubleE\Controllers;
 
 use DoubleE\Core\Response;
 use DoubleE\Services\ReportService;
+use DoubleE\Services\InvoiceService;
 use DoubleE\Services\PdfService;
 use DoubleE\Core\Auth;
 
@@ -128,6 +129,29 @@ class ReportController extends BaseController
             'report'    => $report,
             'fromDate'  => $fromDate,
             'toDate'    => $toDate,
+        ]);
+    }
+
+    /**
+     * AR/AP Aging report.
+     */
+    public function aging(): Response
+    {
+        Auth::getInstance()->requirePermission('reports.view');
+
+        $type = trim((string) $this->request->get('type', 'invoice'));
+
+        if (!in_array($type, ['invoice', 'bill'], true)) {
+            $type = 'invoice';
+        }
+
+        $invoiceService = new InvoiceService();
+        $aging = $invoiceService->getAgingReport($type);
+
+        return $this->render('reports/aging', [
+            'pageTitle' => ($type === 'invoice' ? 'AR' : 'AP') . ' Aging Report',
+            'aging'     => $aging,
+            'type'      => $type,
         ]);
     }
 

@@ -82,4 +82,22 @@
             </div>
         </div>
     </div>
+
+    <!-- Aging Report -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100" style="border-radius: 0;">
+            <div class="card-body d-flex flex-column">
+                <div class="mb-3">
+                    <div class="bg-light d-inline-flex p-3" style="border-radius: 0;">
+                        <i class="bi bi-hourglass-split fs-3 text-danger"></i>
+                    </div>
+                </div>
+                <h6 class="fw-semibold mb-1">Aging Report</h6>
+                <p class="text-muted small flex-grow-1">Accounts receivable and payable aging by period.</p>
+                <a href="/reports/aging" class="btn btn-dark btn-sm mt-2" style="border-radius: 0;">
+                    <i class="bi bi-file-earmark-bar-graph me-1"></i> Generate
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
