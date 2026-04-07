@@ -21,7 +21,7 @@ $cash       = (float) ($kpis['cash_balance'] ?? 0);
                         <p class="text-muted small mb-1">Total Revenue</p>
                         <h4 class="fw-bold mb-0">$<?= number_format($revenue, 2) ?></h4>
                     </div>
-                    <div class="bg-light rounded-circle p-3">
+                    <div class="bg-light p-3">
                         <i class="bi bi-graph-up-arrow text-success fs-4"></i>
                     </div>
                 </div>
@@ -36,7 +36,7 @@ $cash       = (float) ($kpis['cash_balance'] ?? 0);
                         <p class="text-muted small mb-1">Total Expenses</p>
                         <h4 class="fw-bold mb-0">$<?= number_format($expenses, 2) ?></h4>
                     </div>
-                    <div class="bg-light rounded-circle p-3">
+                    <div class="bg-light p-3">
                         <i class="bi bi-graph-down-arrow text-danger fs-4"></i>
                     </div>
                 </div>
@@ -51,7 +51,7 @@ $cash       = (float) ($kpis['cash_balance'] ?? 0);
                         <p class="text-muted small mb-1">Accounts Receivable</p>
                         <h4 class="fw-bold mb-0">$<?= number_format($receivable, 2) ?></h4>
                     </div>
-                    <div class="bg-light rounded-circle p-3">
+                    <div class="bg-light p-3">
                         <i class="bi bi-arrow-down-left text-primary fs-4"></i>
                     </div>
                 </div>
@@ -66,7 +66,7 @@ $cash       = (float) ($kpis['cash_balance'] ?? 0);
                         <p class="text-muted small mb-1">Cash Balance</p>
                         <h4 class="fw-bold mb-0">$<?= number_format($cash, 2) ?></h4>
                     </div>
-                    <div class="bg-light rounded-circle p-3">
+                    <div class="bg-light p-3">
                         <i class="bi bi-wallet2 text-info fs-4"></i>
                     </div>
                 </div>
