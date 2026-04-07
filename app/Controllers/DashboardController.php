@@ -24,7 +24,7 @@ class DashboardController extends BaseController
     {
         $kpis       = $this->dashboardService->getKpis();
         $chartData  = $this->dashboardService->getRevenueExpenseChart();
-        $activity   = $this->dashboardService->getRecentActivity();
+        $activity   = $this->dashboardService->getActivityFeed();
 
         return $this->render('dashboard/index', [
             'pageTitle' => 'Dashboard',

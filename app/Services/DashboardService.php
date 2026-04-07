@@ -171,9 +171,189 @@ class DashboardService
         return $this->db->query($sql, [$limit]);
     }
 
+    /**
+     * Get a rich activity feed from the audit log for the dashboard.
+     *
+     * Pulls from audit_log joined with users, resolves entity display numbers,
+     * and builds human-readable descriptions with relative timestamps.
+     *
+     * @param int $limit Maximum number of entries to return (default 15)
+     *
+     * @return array List of activity items with description, action, entity info, and time_ago
+     */
+    public function getActivityFeed(int $limit = 15): array
+    {
+        $sql = "SELECT al.id, al.action, al.entity_type, al.entity_id, al.created_at,
+                       CONCAT(u.first_name, ' ', u.last_name) AS user_name
+                FROM audit_log al
+                LEFT JOIN users u ON u.id = al.user_id
+                ORDER BY al.created_at DESC
+                LIMIT ?";
+
+        $rows = $this->db->query($sql, [$limit]);
+
+        $feed = [];
+
+        foreach ($rows as $row) {
+            $action     = $row['action'] ?? '';
+            $entityType = $row['entity_type'] ?? '';
+            $entityId   = $row['entity_id'] ?? null;
+            $userName   = $row['user_name'] ?? 'System';
+            $createdAt  = $row['created_at'] ?? '';
+
+            // Resolve entity display number
+            $entityNumber = $this->resolveEntityNumber($entityType, $entityId);
+
+            // Build human-readable description
+            $description = $this->buildActivityDescription($action, $entityType, $userName, $entityNumber);
+
+            // Build entity URL
+            $entityUrl = $this->buildEntityUrl($entityType, $entityId);
+
+            $feed[] = [
+                'description' => $description,
+                'action'      => $action,
+                'entity_type' => $entityType,
+                'entity_url'  => $entityUrl,
+                'user_name'   => $userName,
+                'time_ago'    => $this->timeAgo($createdAt),
+                'created_at'  => $createdAt,
+            ];
+        }
+
+        return $feed;
+    }
+
     // -------------------------------------------------------------------------
     // Private helpers
     // -------------------------------------------------------------------------
+
+    /**
+     * Resolve a display number for an entity from its source table.
+     */
+    private function resolveEntityNumber(string $entityType, ?int $entityId): ?string
+    {
+        if ($entityId === null) {
+            return null;
+        }
+
+        $lookups = [
+            'journal_entry' => ['table' => 'journal_entries', 'column' => 'entry_number'],
+            'invoice'       => ['table' => 'invoices',        'column' => 'document_number'],
+            'payment'       => ['table' => 'payments',        'column' => 'payment_number'],
+        ];
+
+        if (!isset($lookups[$entityType])) {
+            return null;
+        }
+
+        $lookup = $lookups[$entityType];
+        $sql = "SELECT {$lookup['column']} FROM {$lookup['table']} WHERE id = ?";
+
+        $result = $this->db->queryScalar($sql, [$entityId]);
+
+        return $result !== null ? (string) $result : null;
+    }
+
+    /**
+     * Build a human-readable description for an audit log entry.
+     */
+    private function buildActivityDescription(string $action, string $entityType, string $userName, ?string $entityNumber): string
+    {
+        if ($action === 'login') {
+            return "{$userName} logged in";
+        }
+
+        $actionVerbs = [
+            'create' => 'created',
+            'update' => 'updated',
+            'delete' => 'deleted',
+            'post'   => 'posted',
+            'void'   => 'voided',
+        ];
+
+        $entityLabels = [
+            'journal_entry' => 'journal entry',
+            'invoice'       => 'invoice',
+            'payment'       => 'payment',
+            'account'       => 'account',
+            'contact'       => 'contact',
+            'bill'          => 'bill',
+            'user'          => 'user',
+        ];
+
+        $verb  = $actionVerbs[$action] ?? $action;
+        $label = $entityLabels[$entityType] ?? str_replace('_', ' ', $entityType);
+        $ref   = $entityNumber !== null ? " {$entityNumber}" : '';
+
+        return "{$userName} {$verb} {$label}{$ref}";
+    }
+
+    /**
+     * Build a URL for an entity, or null if not linkable.
+     */
+    private function buildEntityUrl(string $entityType, ?int $entityId): ?string
+    {
+        if ($entityId === null) {
+            return null;
+        }
+
+        $routes = [
+            'journal_entry' => '/journal-entries/',
+            'invoice'       => '/invoices/',
+            'payment'       => '/payments/',
+            'account'       => '/accounts/',
+            'contact'       => '/contacts/',
+            'bill'          => '/bills/',
+        ];
+
+        if (!isset($routes[$entityType])) {
+            return null;
+        }
+
+        return $routes[$entityType] . $entityId;
+    }
+
+    /**
+     * Calculate a human-readable relative time string.
+     */
+    private function timeAgo(string $datetime): string
+    {
+        if (empty($datetime)) {
+            return '';
+        }
+
+        $now  = new \DateTimeImmutable('now');
+        $then = new \DateTimeImmutable($datetime);
+        $diff = $now->getTimestamp() - $then->getTimestamp();
+
+        if ($diff < 60) {
+            return 'just now';
+        }
+
+        $minutes = (int) floor($diff / 60);
+        if ($minutes < 60) {
+            return $minutes === 1 ? '1 minute ago' : "{$minutes} minutes ago";
+        }
+
+        $hours = (int) floor($minutes / 60);
+        if ($hours < 24) {
+            return $hours === 1 ? '1 hour ago' : "{$hours} hours ago";
+        }
+
+        $days = (int) floor($hours / 24);
+        if ($days < 30) {
+            return $days === 1 ? '1 day ago' : "{$days} days ago";
+        }
+
+        $months = (int) floor($days / 30);
+        if ($months < 12) {
+            return $months === 1 ? '1 month ago' : "{$months} months ago";
+        }
+
+        $years = (int) floor($months / 12);
+        return $years === 1 ? '1 year ago' : "{$years} years ago";
+    }
 
     /**
      * Get the current fiscal year record, falling back to calendar year dates.

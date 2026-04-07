@@ -101,36 +101,74 @@ $cash       = (float) ($kpis['cash_balance'] ?? 0);
             </div>
             <div class="card-body p-0">
                 <?php if (empty($activity)): ?>
-                    <p class="text-muted text-center py-4 mb-0">No recent transactions</p>
+                    <p class="text-muted text-center py-4 mb-0">No recent activity</p>
                 <?php else: ?>
+                    <?php
+                        $actionIcons = [
+                            'login'  => 'bi-box-arrow-in-right',
+                            'create' => 'bi-plus-circle',
+                            'post'   => 'bi-check-circle',
+                            'void'   => 'bi-x-circle',
+                            'update' => 'bi-pencil',
+                            'delete' => 'bi-trash',
+                        ];
+                        $actionColors = [
+                            'login'  => 'text-info',
+                            'create' => 'text-success',
+                            'post'   => 'text-success',
+                            'void'   => 'text-danger',
+                            'update' => 'text-primary',
+                            'delete' => 'text-danger',
+                        ];
+                    ?>
                     <div class="list-group list-group-flush">
-                        <?php foreach ($activity as $item): ?>
-                            <a href="/journal/<?= (int) $item['id'] ?>"
-                               class="list-group-item list-group-item-action py-3 px-3" style="border-radius: 0;">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <div class="fw-medium small">
-                                            <code class="text-dark"><?= \DoubleE\Core\View::e($item['entry_number'] ?? '') ?></code>
-                                        </div>
-                                        <div class="text-muted small mt-1">
-                                            <?= \DoubleE\Core\View::e($item['description'] ?? '') ?>
-                                        </div>
+                        <?php foreach ($activity as $item):
+                            $action = $item['action'] ?? '';
+                            $icon   = $actionIcons[$action] ?? 'bi-activity';
+                            $color  = $actionColors[$action] ?? 'text-secondary';
+                        ?>
+                            <div class="list-group-item py-3 px-3" style="border-radius: 0;">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="mt-1">
+                                        <i class="bi <?= $icon ?> <?= $color ?> fs-5"></i>
                                     </div>
-                                    <div class="text-end">
-                                        <div class="text-muted small"><?= \DoubleE\Core\View::e($item['entry_date'] ?? '') ?></div>
-                                        <?php
-                                            $sBadges = ['draft' => 'secondary', 'posted' => 'success', 'voided' => 'danger'];
-                                            $sColor = $sBadges[$item['status'] ?? ''] ?? 'secondary';
-                                        ?>
-                                        <span class="badge text-bg-<?= $sColor ?> mt-1" style="border-radius: 0;">
-                                            <?= ucfirst(\DoubleE\Core\View::e($item['status'] ?? '')) ?>
-                                        </span>
+                                    <div class="flex-grow-1 min-width-0">
+                                        <div class="small">
+                                            <?php if (!empty($item['entity_url'])): ?>
+                                                <?php
+                                                    $desc = \DoubleE\Core\View::e($item['description'] ?? '');
+                                                    $url  = \DoubleE\Core\View::e($item['entity_url']);
+                                                    // Link the entity reference within the description
+                                                    $entityType = $item['entity_type'] ?? '';
+                                                    $linkLabels = [
+                                                        'journal_entry' => 'journal entry',
+                                                        'invoice'       => 'invoice',
+                                                        'payment'       => 'payment',
+                                                        'account'       => 'account',
+                                                        'contact'       => 'contact',
+                                                        'bill'          => 'bill',
+                                                    ];
+                                                    $label = $linkLabels[$entityType] ?? '';
+                                                    // Find the entity label+number portion and wrap it in a link
+                                                    if ($label !== '' && preg_match('/(' . preg_quote($label, '/') . ' \S+)$/i', $desc, $m)) {
+                                                        $desc = str_replace($m[1], '<a href="' . $url . '" class="fw-medium text-decoration-none">' . $m[1] . '</a>', $desc);
+                                                    }
+                                                ?>
+                                                <?= $desc ?>
+                                            <?php else: ?>
+                                                <?= \DoubleE\Core\View::e($item['description'] ?? '') ?>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="text-muted small mt-1"><?= \DoubleE\Core\View::e($item['time_ago'] ?? '') ?></div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
+            </div>
+            <div class="card-footer bg-white border-top text-center">
+                <a href="/audit" class="small text-decoration-none">View Full Audit Trail <i class="bi bi-arrow-right"></i></a>
             </div>
         </div>
     </div>
