@@ -32,4 +32,16 @@ return [
     ['method' => 'GET', 'path' => '/fiscal-years', 'controller' => 'FiscalYearController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
     ['method' => 'GET', 'path' => '/fiscal-years/create', 'controller' => 'FiscalYearController', 'action' => 'create', 'middleware' => ['AuthMiddleware']],
     ['method' => 'POST', 'path' => '/fiscal-years', 'controller' => 'FiscalYearController', 'action' => 'store', 'middleware' => ['AuthMiddleware']],
+
+    // Journal Entries
+    ['method' => 'GET', 'path' => '/journal-entries', 'controller' => 'JournalController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/journal-entries/create', 'controller' => 'JournalController', 'action' => 'create', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/journal-entries', 'controller' => 'JournalController', 'action' => 'store', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/journal-entries/{id}', 'controller' => 'JournalController', 'action' => 'show', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/journal-entries/{id}/post', 'controller' => 'JournalController', 'action' => 'post', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/journal-entries/{id}/void', 'controller' => 'JournalController', 'action' => 'void', 'middleware' => ['AuthMiddleware']],
+
+    // General Ledger
+    ['method' => 'GET', 'path' => '/ledger', 'controller' => 'LedgerController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/ledger/account/{id}', 'controller' => 'LedgerController', 'action' => 'account', 'middleware' => ['AuthMiddleware']],
 ];
