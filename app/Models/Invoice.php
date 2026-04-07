@@ -49,7 +49,53 @@ class Invoice extends BaseModel
 
         $sql .= " ORDER BY i.issue_date DESC, i.id DESC";
 
+        if (!empty($filters['limit'])) {
+            $sql .= " LIMIT " . (int) $filters['limit'];
+            if (!empty($filters['offset'])) {
+                $sql .= " OFFSET " . (int) $filters['offset'];
+            }
+        }
+
         return $this->db->query($sql, $params);
+    }
+
+    /**
+     * Count invoices matching the given filters.
+     */
+    public function countAll(array $filters = []): int
+    {
+        $sql = "SELECT COUNT(*)
+                FROM {$this->table} i
+                INNER JOIN contacts c ON c.id = i.contact_id
+                WHERE 1=1";
+        $params = [];
+
+        if (!empty($filters['document_type'])) {
+            $sql .= " AND i.document_type = ?";
+            $params[] = $filters['document_type'];
+        }
+
+        if (!empty($filters['status'])) {
+            $sql .= " AND i.status = ?";
+            $params[] = $filters['status'];
+        }
+
+        if (!empty($filters['contact_id'])) {
+            $sql .= " AND i.contact_id = ?";
+            $params[] = $filters['contact_id'];
+        }
+
+        if (!empty($filters['date_from'])) {
+            $sql .= " AND i.issue_date >= ?";
+            $params[] = $filters['date_from'];
+        }
+
+        if (!empty($filters['date_to'])) {
+            $sql .= " AND i.issue_date <= ?";
+            $params[] = $filters['date_to'];
+        }
+
+        return (int) $this->db->queryScalar($sql, $params);
     }
 
     /**

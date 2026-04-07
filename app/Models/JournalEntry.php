@@ -58,7 +58,48 @@ class JournalEntry extends BaseModel
 
         $sql .= " ORDER BY je.entry_date DESC, je.id DESC";
 
+        if (!empty($filters['limit'])) {
+            $sql .= " LIMIT " . (int) $filters['limit'];
+            if (!empty($filters['offset'])) {
+                $sql .= " OFFSET " . (int) $filters['offset'];
+            }
+        }
+
         return $this->db->query($sql, $params);
+    }
+
+    /**
+     * Count journal entries matching the given filters.
+     */
+    public function countAll(array $filters = []): int
+    {
+        $sql = "SELECT COUNT(*) FROM {$this->table} je WHERE 1=1";
+        $params = [];
+
+        if (!empty($filters['status'])) {
+            $sql .= " AND je.status = ?";
+            $params[] = $filters['status'];
+        }
+
+        if (!empty($filters['date_from'])) {
+            $sql .= " AND je.entry_date >= ?";
+            $params[] = $filters['date_from'];
+        }
+
+        if (!empty($filters['date_to'])) {
+            $sql .= " AND je.entry_date <= ?";
+            $params[] = $filters['date_to'];
+        }
+
+        if (!empty($filters['search'])) {
+            $sql .= " AND (je.entry_number LIKE ? OR je.description LIKE ? OR je.reference LIKE ?)";
+            $term = '%' . $filters['search'] . '%';
+            $params[] = $term;
+            $params[] = $term;
+            $params[] = $term;
+        }
+
+        return (int) $this->db->queryScalar($sql, $params);
     }
 
     /**

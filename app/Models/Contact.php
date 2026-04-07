@@ -27,7 +27,7 @@ class Contact extends BaseModel
     /**
      * Get all contacts with optional active and type filters.
      */
-    public function getAll(bool $activeOnly = true, ?string $type = null): array
+    public function getAll(bool $activeOnly = true, ?string $type = null, int $limit = 0, int $offset = 0): array
     {
         $sql = "SELECT * FROM {$this->table} WHERE 1=1";
         $params = [];
@@ -43,7 +43,34 @@ class Contact extends BaseModel
 
         $sql .= " ORDER BY display_name";
 
+        if ($limit > 0) {
+            $sql .= " LIMIT " . $limit;
+            if ($offset > 0) {
+                $sql .= " OFFSET " . $offset;
+            }
+        }
+
         return $this->db->query($sql, $params);
+    }
+
+    /**
+     * Count contacts matching the given filters.
+     */
+    public function countAll(bool $activeOnly = true, ?string $type = null): int
+    {
+        $sql = "SELECT COUNT(*) FROM {$this->table} WHERE 1=1";
+        $params = [];
+
+        if ($activeOnly) {
+            $sql .= " AND is_active = 1";
+        }
+
+        if ($type !== null) {
+            $sql .= " AND (type = ? OR type = 'both')";
+            $params[] = $type;
+        }
+
+        return (int) $this->db->queryScalar($sql, $params);
     }
 
     /**

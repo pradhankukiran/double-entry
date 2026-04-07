@@ -119,3 +119,8 @@ $typeBadges = [
         </table>
     </div>
 </div>
+
+<?php if (!empty($pagination)):
+    $view = new \DoubleE\Core\View();
+    echo $view->partial('partials/pagination', ['pagination' => $pagination]);
+endif; ?>
