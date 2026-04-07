@@ -25,6 +25,13 @@
                 <?php echo $view->partial('partials/flash-messages'); ?>
             </div>
 
+            <!-- Breadcrumbs -->
+            <div class="container-fluid px-4">
+                <?php if (!empty($breadcrumbs)): ?>
+                    <?php echo $view->partial('partials/breadcrumbs', ['breadcrumbs' => $breadcrumbs]); ?>
+                <?php endif; ?>
+            </div>
+
             <!-- Main content -->
             <main class="container-fluid px-4 py-3">
                 <?= $content ?? '' ?>
