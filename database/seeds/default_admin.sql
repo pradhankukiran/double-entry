@@ -6,7 +6,7 @@ INSERT INTO users (id, email, password_hash, first_name, last_name, is_active)
 VALUES (
     1,
     'admin@double-e.com',
-    '$2y$12$LJ3m4ys3ZwjYrSPRVp.F2eV5f7E6f2Z8wQ6IZhGPJ5v5z5Y5Y5Y5Y',
+    '$2y$12$7gAKiufDJLG1Xp7YTHhtvuUHwQMRzH622t69EjFDpdzx4d9zPBuli',
     'System',
     'Administrator',
     1

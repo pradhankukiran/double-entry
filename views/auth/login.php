@@ -49,3 +49,53 @@ $flash = \DoubleE\Core\Session::getAllFlash();
         </form>
     </div>
 </div>
+
+<div class="text-center my-4">
+    <span class="text-muted small text-uppercase" style="letter-spacing: 0.1em;">Demo Access</span>
+    <hr class="mt-2 mb-0">
+</div>
+
+<div class="row g-3">
+    <div class="col-4">
+        <form method="POST" action="/login">
+            <?= \DoubleE\Core\Csrf::field() ?>
+            <input type="hidden" name="email" value="admin@double-e.com">
+            <input type="hidden" name="password" value="admin123">
+            <div class="card border h-100" style="border-radius: 0;">
+                <div class="card-body p-3 text-center">
+                    <div class="fw-bold mb-1">Admin</div>
+                    <div class="text-muted small mb-3">Full access to all features</div>
+                    <button type="submit" class="btn btn-outline-dark btn-sm" style="border-radius: 0;">Login as Admin</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-4">
+        <form method="POST" action="/login">
+            <?= \DoubleE\Core\Csrf::field() ?>
+            <input type="hidden" name="email" value="sarah@apex-consulting.com">
+            <input type="hidden" name="password" value="demo123">
+            <div class="card border h-100" style="border-radius: 0;">
+                <div class="card-body p-3 text-center">
+                    <div class="fw-bold mb-1">Accountant</div>
+                    <div class="text-muted small mb-3">Journal entries, reports, invoicing</div>
+                    <button type="submit" class="btn btn-outline-dark btn-sm" style="border-radius: 0;">Login as Accountant</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-4">
+        <form method="POST" action="/login">
+            <?= \DoubleE\Core\Csrf::field() ?>
+            <input type="hidden" name="email" value="mike@apex-consulting.com">
+            <input type="hidden" name="password" value="demo123">
+            <div class="card border h-100" style="border-radius: 0;">
+                <div class="card-body p-3 text-center">
+                    <div class="fw-bold mb-1">Viewer</div>
+                    <div class="text-muted small mb-3">Read-only access to reports and ledger</div>
+                    <button type="submit" class="btn btn-outline-dark btn-sm" style="border-radius: 0;">Login as Viewer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
