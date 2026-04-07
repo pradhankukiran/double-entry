@@ -53,6 +53,13 @@ $statusBadges = [
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-3">
+                        <?php if (($year['status'] ?? '') === 'open' && ($canClose ?? false)): ?>
+                            <a href="/fiscal-years/<?= (int) $year['id'] ?>/close"
+                               class="btn btn-sm btn-outline-dark"
+                               style="border-radius: 0;">
+                                <i class="bi bi-lock me-1"></i> Close Year
+                            </a>
+                        <?php endif; ?>
                         <span class="badge text-bg-<?= $yearBadge ?>" style="border-radius: 0; text-transform: capitalize;">
                             <?= \DoubleE\Core\View::e($year['status']) ?>
                         </span>

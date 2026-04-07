@@ -31,6 +31,8 @@ return [
     // Fiscal Years
     ['method' => 'GET', 'path' => '/fiscal-years', 'controller' => 'FiscalYearController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
     ['method' => 'GET', 'path' => '/fiscal-years/create', 'controller' => 'FiscalYearController', 'action' => 'create', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/fiscal-years/{id}/close', 'controller' => 'FiscalCloseController', 'action' => 'preview', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/fiscal-years/{id}/close', 'controller' => 'FiscalCloseController', 'action' => 'execute', 'middleware' => ['AuthMiddleware']],
     ['method' => 'POST', 'path' => '/fiscal-years', 'controller' => 'FiscalYearController', 'action' => 'store', 'middleware' => ['AuthMiddleware']],
 
     // Journal Entries
@@ -117,4 +119,16 @@ return [
     // Settings
     ['method' => 'GET', 'path' => '/settings', 'controller' => 'SettingsController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
     ['method' => 'POST', 'path' => '/settings', 'controller' => 'SettingsController', 'action' => 'update', 'middleware' => ['AuthMiddleware']],
+
+    // Search
+    ['method' => 'GET', 'path' => '/search', 'controller' => 'SearchController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/search/autocomplete', 'controller' => 'SearchController', 'action' => 'autocomplete', 'middleware' => ['AuthMiddleware']],
+
+    // CSV Export
+    ['method' => 'GET', 'path' => '/export/accounts', 'controller' => 'ExportController', 'action' => 'accounts', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/export/journal-entries', 'controller' => 'ExportController', 'action' => 'journalEntries', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/export/contacts', 'controller' => 'ExportController', 'action' => 'contacts', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/export/invoices', 'controller' => 'ExportController', 'action' => 'invoices', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/export/ledger', 'controller' => 'ExportController', 'action' => 'ledger', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/export/trial-balance', 'controller' => 'ExportController', 'action' => 'trialBalance', 'middleware' => ['AuthMiddleware']],
 ];

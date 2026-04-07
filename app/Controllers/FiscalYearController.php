@@ -29,10 +29,12 @@ class FiscalYearController extends BaseController
         Auth::getInstance()->requirePermission('accounts.view');
 
         $fiscalYears = $this->fiscalYearModel->getAllWithPeriods();
+        $canClose = Auth::getInstance()->hasPermission('period.close');
 
         return $this->render('fiscal-years/index', [
             'pageTitle'   => 'Fiscal Years',
             'fiscalYears' => $fiscalYears,
+            'canClose'    => $canClose,
         ]);
     }
 
