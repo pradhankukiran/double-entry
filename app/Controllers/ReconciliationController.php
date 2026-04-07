@@ -28,7 +28,7 @@ class ReconciliationController extends BaseController
      */
     public function index(): Response
     {
-        $accounts = $this->bankAccountModel->getAllWithReconciliationStatus();
+        $accounts = $this->bankAccountModel->getAll();
 
         return $this->render('banking/reconcile/index', [
             'pageTitle' => 'Bank Reconciliation',
