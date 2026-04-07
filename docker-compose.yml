@@ -5,11 +5,10 @@ services:
     volumes:
       - .:/var/www
     ports:
-      - "8080:8080"
+      - "8080:80"
     depends_on:
       db:
         condition: service_healthy
-    command: php -S 0.0.0.0:8080 -t public
     environment:
       - APP_ENV=development
 
