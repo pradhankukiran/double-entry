@@ -1,0 +1,146 @@
+/**
+ * Print-specific styles for Double-E Financial Reports.
+ *
+ * Included via <link rel="stylesheet" media="print"> or @media print.
+ * These rules complement the base @media print block in app.css.
+ */
+
+@media print {
+    /* ---- Hide UI chrome ---- */
+    #sidebar,
+    .navbar,
+    footer,
+    .btn,
+    .no-print,
+    .card-body form,
+    .flash-messages {
+        display: none !important;
+    }
+
+    /* ---- Layout: full width, no margin ---- */
+    body {
+        background: #fff !important;
+        color: #000 !important;
+        font-size: 11pt;
+        margin: 0;
+        padding: 0;
+    }
+
+    #wrapper {
+        display: block !important;
+    }
+
+    #page-content-wrapper {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    main.container-fluid {
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* ---- Cards: flatten for print ---- */
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .card-header {
+        background: none !important;
+        border-bottom: 2px solid #000 !important;
+        padding: 0.25rem 0 !important;
+    }
+
+    .card-body {
+        padding: 0 !important;
+    }
+
+    /* ---- Tables: ensure borders print ---- */
+    .table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+    }
+
+    .table th,
+    .table td {
+        border: 1px solid #dee2e6 !important;
+        padding: 4px 8px !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .table-light td,
+    .table-light th {
+        background-color: #f8f9fa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .totals-row td {
+        border-top: 2px solid #000 !important;
+    }
+
+    /* ---- Report header visibility ---- */
+    h4, h6 {
+        margin-top: 0 !important;
+    }
+
+    /* ---- Badges: print with background ---- */
+    .badge {
+        border: 1px solid currentColor !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* ---- Amount formatting ---- */
+    .amount {
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+    }
+
+    .font-monospace {
+        font-family: 'Courier New', Courier, monospace !important;
+    }
+
+    /* ---- Page breaks ---- */
+    .card {
+        page-break-inside: avoid;
+    }
+
+    .row > .col-12 + .col-12 {
+        page-break-before: auto;
+    }
+
+    /* Force page break between major report sections when needed */
+    .page-break-before {
+        page-break-before: always;
+    }
+
+    .page-break-after {
+        page-break-after: always;
+    }
+
+    /* Keep section headers with their content */
+    .table-light {
+        page-break-after: avoid;
+    }
+
+    .totals-row {
+        page-break-before: avoid;
+    }
+
+    /* ---- Links: don't show href in print ---- */
+    a[href]:after {
+        content: none !important;
+    }
+}
