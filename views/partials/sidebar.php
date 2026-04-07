@@ -3,7 +3,7 @@
         <a href="/" class="text-decoration-none d-flex align-items-center gap-2">
             <img src="/assets/images/logo.svg" alt="Double-E" width="36" height="36">
             <div>
-                <h5 class="fw-bold mb-0 text-dark" style="font-size: 1rem; line-height: 1.2;">Double-E</h5>
+                <h5 class="fw-bold mb-0 text-dark" style="font-size: 1rem; line-height: 1.2;"><?= \DoubleE\Core\View::e(\DoubleE\Models\Setting::get('company_name', 'Double-E')) ?></h5>
                 <small class="text-muted" style="font-size: 0.7rem;">Accounting Platform</small>
             </div>
         </a>
