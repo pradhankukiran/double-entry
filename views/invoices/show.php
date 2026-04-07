@@ -8,7 +8,7 @@
 $statusBadges = [
     'draft'   => 'secondary',
     'sent'    => 'primary',
-    'partial' => 'info',
+    'partial' => 'warning',
     'paid'    => 'success',
     'overdue' => 'danger',
     'voided'  => 'danger',
