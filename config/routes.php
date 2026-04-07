@@ -51,6 +51,7 @@ return [
     ['method' => 'GET', 'path' => '/reports/balance-sheet', 'controller' => 'ReportController', 'action' => 'balanceSheet', 'middleware' => ['AuthMiddleware']],
     ['method' => 'GET', 'path' => '/reports/income-statement', 'controller' => 'ReportController', 'action' => 'incomeStatement', 'middleware' => ['AuthMiddleware']],
     ['method' => 'GET', 'path' => '/reports/cash-flow', 'controller' => 'ReportController', 'action' => 'cashFlow', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/reports/aging', 'controller' => 'ReportController', 'action' => 'aging', 'middleware' => ['AuthMiddleware']],
     ['method' => 'GET', 'path' => '/reports/{report}/pdf', 'controller' => 'ReportController', 'action' => 'exportPdf', 'middleware' => ['AuthMiddleware']],
 
     // Contacts
@@ -65,6 +66,7 @@ return [
     ['method' => 'GET', 'path' => '/invoices', 'controller' => 'InvoiceController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
     ['method' => 'GET', 'path' => '/invoices/create', 'controller' => 'InvoiceController', 'action' => 'create', 'middleware' => ['AuthMiddleware']],
     ['method' => 'POST', 'path' => '/invoices', 'controller' => 'InvoiceController', 'action' => 'store', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/invoices/{id}/pdf', 'controller' => 'InvoiceController', 'action' => 'pdf', 'middleware' => ['AuthMiddleware']],
     ['method' => 'GET', 'path' => '/invoices/{id}', 'controller' => 'InvoiceController', 'action' => 'show', 'middleware' => ['AuthMiddleware']],
     ['method' => 'POST', 'path' => '/invoices/{id}/post', 'controller' => 'InvoiceController', 'action' => 'post', 'middleware' => ['AuthMiddleware']],
     ['method' => 'POST', 'path' => '/invoices/{id}/void', 'controller' => 'InvoiceController', 'action' => 'void', 'middleware' => ['AuthMiddleware']],
@@ -108,6 +110,9 @@ return [
     ['method' => 'POST', 'path' => '/recurring', 'controller' => 'RecurringController', 'action' => 'store', 'middleware' => ['AuthMiddleware']],
     ['method' => 'GET', 'path' => '/recurring/{id}', 'controller' => 'RecurringController', 'action' => 'show', 'middleware' => ['AuthMiddleware']],
     ['method' => 'POST', 'path' => '/recurring/{id}/run', 'controller' => 'RecurringController', 'action' => 'run', 'middleware' => ['AuthMiddleware']],
+
+    // Audit Trail
+    ['method' => 'GET', 'path' => '/audit', 'controller' => 'AuditController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
 
     // Settings
     ['method' => 'GET', 'path' => '/settings', 'controller' => 'SettingsController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],

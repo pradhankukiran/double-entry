@@ -59,6 +59,9 @@
         <div class="px-3 py-2 text-muted small fw-semibold text-uppercase mt-2">System</div>
 
         <?php if (\DoubleE\Core\Auth::getInstance()->hasPermission('settings.view')): ?>
+        <a href="/audit" class="list-group-item list-group-item-action border-0 px-3 py-2">
+            <i class="bi bi-clock-history me-2"></i> Audit Trail
+        </a>
         <a href="/settings" class="list-group-item list-group-item-action border-0 px-3 py-2">
             <i class="bi bi-gear me-2"></i> Settings
         </a>
