@@ -7,6 +7,7 @@ namespace DoubleE\Controllers;
 use DoubleE\Core\Response;
 use DoubleE\Services\ReportService;
 use DoubleE\Services\PdfService;
+use DoubleE\Core\Auth;
 
 class ReportController extends BaseController
 {
@@ -25,6 +26,8 @@ class ReportController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('reports.view');
+
         return $this->render('reports/index', [
             'pageTitle' => 'Financial Reports',
         ]);
@@ -35,6 +38,8 @@ class ReportController extends BaseController
      */
     public function trialBalance(): Response
     {
+        Auth::getInstance()->requirePermission('reports.view');
+
         $asOfDate = trim((string) $this->request->get('as_of_date', ''));
 
         if ($asOfDate === '') {
@@ -55,6 +60,8 @@ class ReportController extends BaseController
      */
     public function balanceSheet(): Response
     {
+        Auth::getInstance()->requirePermission('reports.view');
+
         $asOfDate = trim((string) $this->request->get('as_of_date', ''));
 
         if ($asOfDate === '') {
@@ -75,6 +82,8 @@ class ReportController extends BaseController
      */
     public function incomeStatement(): Response
     {
+        Auth::getInstance()->requirePermission('reports.view');
+
         $fromDate = trim((string) $this->request->get('from_date', ''));
         $toDate   = trim((string) $this->request->get('to_date', ''));
 
@@ -100,6 +109,8 @@ class ReportController extends BaseController
      */
     public function cashFlow(): Response
     {
+        Auth::getInstance()->requirePermission('reports.view');
+
         $fromDate = trim((string) $this->request->get('from_date', ''));
         $toDate   = trim((string) $this->request->get('to_date', ''));
 
@@ -125,6 +136,8 @@ class ReportController extends BaseController
      */
     public function exportPdf(string $report): Response
     {
+        Auth::getInstance()->requirePermission('reports.view');
+
         $validReports = ['trial-balance', 'balance-sheet', 'income-statement', 'cash-flow'];
 
         if (!in_array($report, $validReports, true)) {

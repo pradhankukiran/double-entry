@@ -35,20 +35,26 @@ foreach ($lines as $line) {
             <i class="bi bi-arrow-left me-1"></i> Back
         </a>
         <?php if ($isDraft): ?>
+            <?php if ($canEdit ?? false): ?>
             <a href="/journal/<?= (int) $entry['id'] ?>/edit" class="btn btn-outline-dark" style="border-radius: 0;">
                 <i class="bi bi-pencil me-1"></i> Edit
             </a>
+            <?php endif; ?>
+            <?php if ($canPost ?? false): ?>
             <form method="POST" action="/journal/<?= (int) $entry['id'] ?>/post" class="d-inline">
                 <?= \DoubleE\Core\Csrf::field() ?>
                 <button type="submit" class="btn btn-dark" style="border-radius: 0;" onclick="return confirm('Post this journal entry? This action cannot be undone.');">
                     <i class="bi bi-check-lg me-1"></i> Post
                 </button>
             </form>
+            <?php endif; ?>
         <?php endif; ?>
         <?php if ($isPosted): ?>
+            <?php if ($canVoid ?? false): ?>
             <button type="button" class="btn btn-outline-danger" style="border-radius: 0;" data-bs-toggle="modal" data-bs-target="#voidModal">
                 <i class="bi bi-x-circle me-1"></i> Void
             </button>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 </div>

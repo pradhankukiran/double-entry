@@ -7,6 +7,7 @@ namespace DoubleE\Controllers;
 use DoubleE\Core\Response;
 use DoubleE\Models\BankAccount;
 use DoubleE\Services\BankImportService;
+use DoubleE\Core\Auth;
 
 class BankImportController extends BaseController
 {
@@ -25,6 +26,8 @@ class BankImportController extends BaseController
      */
     public function upload(string $id): Response
     {
+        Auth::getInstance()->requirePermission('banking.create');
+
         $account = $this->bankAccountModel->find((int) $id);
 
         if ($account === null) {
@@ -43,6 +46,7 @@ class BankImportController extends BaseController
      */
     public function preview(): Response
     {
+        Auth::getInstance()->requirePermission('banking.create');
         $this->validateCsrf();
 
         $bankAccountId = (int) $this->request->post('bank_account_id', 0);
@@ -104,6 +108,7 @@ class BankImportController extends BaseController
      */
     public function import(): Response
     {
+        Auth::getInstance()->requirePermission('banking.create');
         $this->validateCsrf();
 
         $bankAccountId = (int) $this->request->post('bank_account_id', 0);

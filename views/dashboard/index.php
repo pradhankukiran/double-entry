@@ -76,20 +76,27 @@ $cash       = (float) ($kpis['cash_balance'] ?? 0);
 </div>
 
 <!-- Chart + Recent Activity -->
-<div class="row g-4 mt-2">
-    <div class="col-md-8">
-        <div class="card border-0 shadow-sm" style="border-radius: 0;">
-            <div class="card-header bg-white border-bottom" style="border-radius: 0;">
-                <h6 class="fw-semibold mb-0">Revenue vs Expenses</h6>
+<div class="row g-4 mt-2 align-items-stretch">
+    <div class="col-xl-8">
+        <div class="card border-0 shadow-sm dashboard-panel dashboard-chart-card h-100">
+            <div class="card-header bg-white border-bottom">
+                <div class="d-flex justify-content-between align-items-start gap-3">
+                    <div>
+                        <h6 class="fw-semibold mb-1">Revenue vs Expenses</h6>
+                        <p class="text-muted small mb-0">Six-month performance snapshot</p>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
-                <canvas id="revenueExpenseChart" height="250"></canvas>
+                <div class="dashboard-chart-wrap">
+                    <canvas id="revenueExpenseChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm" style="border-radius: 0;">
-            <div class="card-header bg-white border-bottom" style="border-radius: 0;">
+    <div class="col-xl-4">
+        <div class="card border-0 shadow-sm dashboard-panel dashboard-activity h-100">
+            <div class="card-header bg-white border-bottom">
                 <h6 class="fw-semibold mb-0">Recent Activity</h6>
             </div>
             <div class="card-body p-0">
@@ -151,36 +158,73 @@ $cash       = (float) ($kpis['cash_balance'] ?? 0);
                     data: revenue,
                     backgroundColor: 'rgba(25, 135, 84, 0.8)',
                     borderColor: 'rgba(25, 135, 84, 1)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    borderRadius: 0,
+                    borderSkipped: false,
+                    maxBarThickness: 32
                 },
                 {
                     label: 'Expenses',
                     data: expenses,
                     backgroundColor: 'rgba(220, 53, 69, 0.8)',
                     borderColor: 'rgba(220, 53, 69, 1)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    borderRadius: 0,
+                    borderSkipped: false,
+                    maxBarThickness: 32
                 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            layout: {
+                padding: {
+                    top: 8,
+                    right: 8,
+                    bottom: 0,
+                    left: 0
+                }
+            },
             plugins: {
                 legend: {
                     position: 'top',
+                    align: 'start',
                     labels: {
                         usePointStyle: true,
-                        padding: 20
+                        pointStyle: 'rect',
+                        boxWidth: 10,
+                        padding: 18
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': $' + context.parsed.y.toLocaleString();
+                        }
                     }
                 }
             },
             scales: {
                 x: {
-                    grid: { display: false }
+                    grid: { display: false },
+                    ticks: {
+                        color: '#6c757d'
+                    }
                 },
                 y: {
                     beginAtZero: true,
+                    grid: {
+                        color: 'rgba(33, 37, 41, 0.08)',
+                        drawBorder: false
+                    },
                     ticks: {
+                        color: '#6c757d',
+                        padding: 10,
                         callback: function(value) {
                             return '$' + value.toLocaleString();
                         }

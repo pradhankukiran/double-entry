@@ -14,6 +14,7 @@ $statusBadges = [
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0">Payments</h4>
+    <?php if ($canCreate ?? false): ?>
     <div class="d-flex gap-2">
         <a href="/payments/create?type=received" class="btn btn-dark" style="border-radius: 0;">
             <i class="bi bi-plus-lg me-1"></i> Receive Payment
@@ -22,6 +23,7 @@ $statusBadges = [
             <i class="bi bi-plus-lg me-1"></i> Make Payment
         </a>
     </div>
+    <?php endif; ?>
 </div>
 
 <!-- Filter Bar -->

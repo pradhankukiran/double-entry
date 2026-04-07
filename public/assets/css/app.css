@@ -40,6 +40,36 @@ body {
     border-radius: 4px 4px 0 0;
 }
 
+/* Dashboard */
+.dashboard-panel {
+    border-radius: 0;
+}
+
+.dashboard-panel .card-header {
+    padding: 1rem 1.25rem;
+    border-radius: 0;
+}
+
+.dashboard-chart-card .card-body {
+    padding: 1.25rem;
+}
+
+.dashboard-chart-wrap {
+    position: relative;
+    height: clamp(320px, 42vh, 420px);
+    min-height: 320px;
+}
+
+.dashboard-chart-wrap canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.dashboard-activity .list-group-item {
+    min-height: 78px;
+}
+
 /* Tables */
 .table th {
     font-weight: 600;
@@ -91,6 +121,12 @@ body {
     #sidebar, .navbar, footer, .btn, .no-print { display: none !important; }
     #page-content-wrapper { margin: 0; width: 100%; }
     .card { border: 1px solid #dee2e6 !important; box-shadow: none !important; }
+}
+
+@media (max-width: 991.98px) {
+    .dashboard-chart-wrap {
+        height: 320px;
+    }
 }
 
 /* Form styling */

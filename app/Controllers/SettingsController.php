@@ -6,6 +6,7 @@ namespace DoubleE\Controllers;
 
 use DoubleE\Core\Response;
 use DoubleE\Models\Setting;
+use DoubleE\Core\Auth;
 
 class SettingsController extends BaseController
 {
@@ -22,11 +23,15 @@ class SettingsController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('settings.view');
+        $canEdit = Auth::getInstance()->hasPermission('settings.edit');
+
         $settings = $this->settingModel->getAll();
 
         return $this->render('settings/index', [
             'pageTitle' => 'Settings',
             'settings'  => $settings,
+            'canEdit'   => $canEdit,
         ]);
     }
 
@@ -35,6 +40,7 @@ class SettingsController extends BaseController
      */
     public function update(): Response
     {
+        Auth::getInstance()->requirePermission('settings.edit');
         $this->validateCsrf();
 
         $fields = [

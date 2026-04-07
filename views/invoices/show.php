@@ -33,25 +33,31 @@ $lines    = $invoice['lines'] ?? [];
             <i class="bi bi-arrow-left me-1"></i> Back
         </a>
         <?php if ($isDraft): ?>
+            <?php if ($canPost ?? false): ?>
             <form method="POST" action="/invoices/<?= (int) $invoice['id'] ?>/post" class="d-inline">
                 <?= \DoubleE\Core\Csrf::field() ?>
                 <button type="submit" class="btn btn-dark" style="border-radius: 0;" onclick="return confirm('Post this <?= $isInvoice ? 'invoice' : 'bill' ?>? This will create journal entries.');">
                     <i class="bi bi-check-lg me-1"></i> Post
                 </button>
             </form>
+            <?php endif; ?>
         <?php endif; ?>
         <?php if (!$isDraft && !$isVoided && !$isPaid): ?>
+            <?php if ($canCreate ?? false): ?>
             <a href="/payments/create?type=<?= $isInvoice ? 'received' : 'made' ?>&contact_id=<?= (int) $invoice['contact_id'] ?>" class="btn btn-outline-dark" style="border-radius: 0;">
                 <i class="bi bi-cash me-1"></i> Record Payment
             </a>
+            <?php endif; ?>
         <?php endif; ?>
         <?php if (!$isDraft && !$isVoided): ?>
+            <?php if ($canVoid ?? false): ?>
             <form method="POST" action="/invoices/<?= (int) $invoice['id'] ?>/void" class="d-inline">
                 <?= \DoubleE\Core\Csrf::field() ?>
                 <button type="submit" class="btn btn-outline-danger" style="border-radius: 0;" onclick="return confirm('Void this <?= $isInvoice ? 'invoice' : 'bill' ?>? This action cannot be undone.');">
                     <i class="bi bi-x-circle me-1"></i> Void
                 </button>
             </form>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 </div>

@@ -23,6 +23,9 @@ $months = [
     11 => 'November',
     12 => 'December',
 ];
+
+$readonly = ($canEdit ?? false) ? '' : 'readonly';
+$disabled = ($canEdit ?? false) ? '' : 'disabled';
 ?>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -47,6 +50,7 @@ $months = [
                            name="company_name"
                            value="<?= $s('company_name') ?>"
                            required
+                           <?= $readonly ?>
                            style="border-radius: 0;">
                 </div>
                 <div class="col-md-6">
@@ -56,6 +60,7 @@ $months = [
                            id="legal_name"
                            name="legal_name"
                            value="<?= $s('legal_name') ?>"
+                           <?= $readonly ?>
                            style="border-radius: 0;">
                 </div>
             </div>
@@ -68,6 +73,7 @@ $months = [
                            name="tax_id"
                            value="<?= $s('tax_id') ?>"
                            placeholder="e.g. 12-3456789"
+                           <?= $readonly ?>
                            style="border-radius: 0;">
                 </div>
                 <div class="col-md-4">
@@ -77,6 +83,7 @@ $months = [
                            id="phone"
                            name="phone"
                            value="<?= $s('phone') ?>"
+                           <?= $readonly ?>
                            style="border-radius: 0;">
                 </div>
                 <div class="col-md-4">
@@ -86,6 +93,7 @@ $months = [
                            id="email"
                            name="email"
                            value="<?= $s('email') ?>"
+                           <?= $readonly ?>
                            style="border-radius: 0;">
                 </div>
             </div>
@@ -95,6 +103,7 @@ $months = [
                           id="address"
                           name="address"
                           rows="3"
+                          <?= $readonly ?>
                           style="border-radius: 0;"><?= $s('address') ?></textarea>
             </div>
             <div class="mb-0">
@@ -105,6 +114,7 @@ $months = [
                        name="website"
                        value="<?= $s('website') ?>"
                        placeholder="https://"
+                       <?= $readonly ?>
                        style="border-radius: 0;">
             </div>
         </div>
@@ -125,6 +135,7 @@ $months = [
                            name="default_currency"
                            value="<?= $s('default_currency', 'USD') ?>"
                            maxlength="3"
+                           <?= $readonly ?>
                            style="border-radius: 0;">
                     <div class="form-text">Three-letter ISO 4217 currency code.</div>
                 </div>
@@ -133,6 +144,7 @@ $months = [
                     <select class="form-select"
                             id="fiscal_year_start"
                             name="fiscal_year_start"
+                            <?= $disabled ?>
                             style="border-radius: 0;">
                         <?php foreach ($months as $num => $name): ?>
                             <option value="<?= $num ?>"
@@ -147,6 +159,7 @@ $months = [
                     <select class="form-select"
                             id="date_format"
                             name="date_format"
+                            <?= $disabled ?>
                             style="border-radius: 0;">
                         <?php
                         $dateFormats = [
@@ -172,6 +185,7 @@ $months = [
                     <select class="form-select"
                             id="number_format"
                             name="number_format"
+                            <?= $disabled ?>
                             style="border-radius: 0;">
                         <?php
                         $numberFormats = [
@@ -195,9 +209,11 @@ $months = [
     </div>
 
     <!-- Save -->
+    <?php if ($canEdit ?? false): ?>
     <div class="d-flex justify-content-end">
         <button type="submit" class="btn btn-dark" style="border-radius: 0;">
             <i class="bi bi-check-lg me-1"></i> Save Settings
         </button>
     </div>
+    <?php endif; ?>
 </form>

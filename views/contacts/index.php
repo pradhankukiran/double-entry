@@ -14,9 +14,11 @@ $typeBadges = [
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0">Contacts</h4>
+    <?php if ($canCreate ?? false): ?>
     <a href="/contacts/create" class="btn btn-dark" style="border-radius: 0;">
         <i class="bi bi-plus-lg me-1"></i> New Contact
     </a>
+    <?php endif; ?>
 </div>
 
 <!-- Type Filter Tabs -->

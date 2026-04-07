@@ -9,6 +9,7 @@ use DoubleE\Models\Account;
 use DoubleE\Models\AccountType;
 use DoubleE\Models\AccountSubType;
 use DoubleE\Services\ChartOfAccountsService;
+use DoubleE\Core\Auth;
 
 class AccountController extends BaseController
 {
@@ -31,6 +32,10 @@ class AccountController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('accounts.view');
+        $canCreate = Auth::getInstance()->hasPermission('accounts.create');
+        $canEdit = Auth::getInstance()->hasPermission('accounts.edit');
+
         $tree = $this->coaService->getHierarchyTree();
         $accountTypes = $this->accountTypeModel->getAllOrdered();
 
@@ -38,6 +43,8 @@ class AccountController extends BaseController
             'pageTitle'    => 'Chart of Accounts',
             'tree'         => $tree,
             'accountTypes' => $accountTypes,
+            'canCreate'    => $canCreate,
+            'canEdit'      => $canEdit,
         ]);
     }
 
@@ -46,6 +53,8 @@ class AccountController extends BaseController
      */
     public function create(): Response
     {
+        Auth::getInstance()->requirePermission('accounts.create');
+
         $types = $this->accountTypeModel->getAllOrdered();
         $subtypes = $this->accountSubTypeModel->findAll([], 'account_type_id, name');
         $parentOptions = $this->coaService->buildAccountDropdown();
@@ -63,6 +72,7 @@ class AccountController extends BaseController
      */
     public function store(): Response
     {
+        Auth::getInstance()->requirePermission('accounts.create');
         $this->validateCsrf();
 
         $accountNumber = trim((string) $this->request->post('account_number', ''));
@@ -126,6 +136,10 @@ class AccountController extends BaseController
      */
     public function show(string $id): Response
     {
+        Auth::getInstance()->requirePermission('accounts.view');
+        $canCreate = Auth::getInstance()->hasPermission('accounts.create');
+        $canEdit = Auth::getInstance()->hasPermission('accounts.edit');
+
         $account = $this->accountModel->find((int) $id);
 
         if ($account === null) {
@@ -154,6 +168,8 @@ class AccountController extends BaseController
             'subtype'   => $subtype,
             'parent'    => $parent,
             'children'  => $children,
+            'canCreate' => $canCreate,
+            'canEdit'   => $canEdit,
         ]);
     }
 
@@ -162,6 +178,8 @@ class AccountController extends BaseController
      */
     public function edit(string $id): Response
     {
+        Auth::getInstance()->requirePermission('accounts.edit');
+
         $account = $this->accountModel->find((int) $id);
 
         if ($account === null) {
@@ -187,6 +205,7 @@ class AccountController extends BaseController
      */
     public function update(string $id): Response
     {
+        Auth::getInstance()->requirePermission('accounts.edit');
         $this->validateCsrf();
 
         $accountId = (int) $id;
@@ -246,6 +265,7 @@ class AccountController extends BaseController
      */
     public function toggleActive(string $id): Response
     {
+        Auth::getInstance()->requirePermission('accounts.edit');
         $this->validateCsrf();
 
         $accountId = (int) $id;

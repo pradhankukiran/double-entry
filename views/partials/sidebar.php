@@ -58,11 +58,15 @@
 
         <div class="px-3 py-2 text-muted small fw-semibold text-uppercase mt-2">System</div>
 
+        <?php if (\DoubleE\Core\Auth::getInstance()->hasPermission('settings.view')): ?>
         <a href="/settings" class="list-group-item list-group-item-action border-0 px-3 py-2">
             <i class="bi bi-gear me-2"></i> Settings
         </a>
+        <?php endif; ?>
+        <?php if (\DoubleE\Core\Auth::getInstance()->hasPermission('users.view')): ?>
         <a href="/users" class="list-group-item list-group-item-action border-0 px-3 py-2">
             <i class="bi bi-person-gear me-2"></i> Users
         </a>
+        <?php endif; ?>
     </div>
 </nav>

@@ -8,6 +8,7 @@ use DoubleE\Core\Response;
 use DoubleE\Models\BankAccount;
 use DoubleE\Models\BankReconciliation;
 use DoubleE\Services\ReconciliationService;
+use DoubleE\Core\Auth;
 
 class ReconciliationController extends BaseController
 {
@@ -28,6 +29,8 @@ class ReconciliationController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('banking.view');
+
         $accounts = $this->bankAccountModel->getAll();
 
         return $this->render('banking/reconcile/index', [
@@ -41,6 +44,8 @@ class ReconciliationController extends BaseController
      */
     public function start(string $id): Response
     {
+        Auth::getInstance()->requirePermission('banking.edit');
+
         $account = $this->bankAccountModel->find((int) $id);
 
         if ($account === null) {
@@ -59,6 +64,7 @@ class ReconciliationController extends BaseController
      */
     public function create(): Response
     {
+        Auth::getInstance()->requirePermission('banking.edit');
         $this->validateCsrf();
 
         $bankAccountId   = (int) $this->request->post('bank_account_id', 0);
@@ -103,6 +109,8 @@ class ReconciliationController extends BaseController
      */
     public function reconcile(string $id): Response
     {
+        Auth::getInstance()->requirePermission('banking.edit');
+
         $reconciliation = $this->reconciliationModel->find((int) $id);
 
         if ($reconciliation === null) {
@@ -129,6 +137,7 @@ class ReconciliationController extends BaseController
      */
     public function toggle(): Response
     {
+        Auth::getInstance()->requirePermission('banking.edit');
         $this->validateCsrf();
 
         $reconciliationId = (int) $this->request->post('reconciliation_id', 0);
@@ -149,6 +158,7 @@ class ReconciliationController extends BaseController
      */
     public function complete(string $id): Response
     {
+        Auth::getInstance()->requirePermission('banking.edit');
         $this->validateCsrf();
 
         $reconciliation = $this->reconciliationModel->find((int) $id);

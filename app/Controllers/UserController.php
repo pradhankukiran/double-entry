@@ -23,6 +23,8 @@ class UserController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('users.view');
+
         $users = $this->userModel->findAll([], 'created_at DESC');
 
         // Attach role information to each user

@@ -8,6 +8,7 @@ use DoubleE\Core\Response;
 use DoubleE\Models\Account;
 use DoubleE\Models\RecurringTemplate;
 use DoubleE\Services\RecurringTransactionService;
+use DoubleE\Core\Auth;
 
 class RecurringController extends BaseController
 {
@@ -28,11 +29,15 @@ class RecurringController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('journal.view');
+        $canCreate = Auth::getInstance()->hasPermission('journal.create');
+
         $templates = $this->templateModel->getAll();
 
         return $this->render('recurring/index', [
             'pageTitle'  => 'Recurring Transactions',
             'templates'  => $templates,
+            'canCreate'  => $canCreate,
         ]);
     }
 
@@ -41,6 +46,8 @@ class RecurringController extends BaseController
      */
     public function create(): Response
     {
+        Auth::getInstance()->requirePermission('journal.create');
+
         $accounts = $this->accountModel->getLeafAccounts();
 
         // Group accounts by type for optgroups
@@ -62,6 +69,7 @@ class RecurringController extends BaseController
      */
     public function store(): Response
     {
+        Auth::getInstance()->requirePermission('journal.create');
         $this->validateCsrf();
 
         $name       = trim((string) $this->request->post('name', ''));
@@ -164,6 +172,9 @@ class RecurringController extends BaseController
      */
     public function show(string $id): Response
     {
+        Auth::getInstance()->requirePermission('journal.view');
+        $canCreate = Auth::getInstance()->hasPermission('journal.create');
+
         $template = $this->templateModel->getWithLines((int) $id);
 
         if ($template === null) {
@@ -174,6 +185,7 @@ class RecurringController extends BaseController
         return $this->render('recurring/show', [
             'pageTitle' => 'Recurring: ' . ($template['name'] ?? 'Template'),
             'template'  => $template,
+            'canCreate' => $canCreate,
         ]);
     }
 
@@ -182,6 +194,7 @@ class RecurringController extends BaseController
      */
     public function run(string $id): Response
     {
+        Auth::getInstance()->requirePermission('journal.post');
         $this->validateCsrf();
 
         try {

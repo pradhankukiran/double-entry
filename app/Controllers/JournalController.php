@@ -8,6 +8,7 @@ use DoubleE\Core\Response;
 use DoubleE\Models\Account;
 use DoubleE\Models\JournalEntry;
 use DoubleE\Services\JournalEntryService;
+use DoubleE\Core\Auth;
 
 class JournalController extends BaseController
 {
@@ -28,6 +29,11 @@ class JournalController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('journal.view');
+        $canCreate = Auth::getInstance()->hasPermission('journal.create');
+        $canPost = Auth::getInstance()->hasPermission('journal.post');
+        $canVoid = Auth::getInstance()->hasPermission('journal.void');
+
         $status   = trim((string) $this->request->get('status', ''));
         $dateFrom = trim((string) $this->request->get('date_from', ''));
         $dateTo   = trim((string) $this->request->get('date_to', ''));
@@ -53,6 +59,9 @@ class JournalController extends BaseController
             'pageTitle' => 'Journal Entries',
             'entries'   => $entries,
             'filters'   => $filters,
+            'canCreate' => $canCreate,
+            'canPost'   => $canPost,
+            'canVoid'   => $canVoid,
         ]);
     }
 
@@ -61,6 +70,8 @@ class JournalController extends BaseController
      */
     public function create(): Response
     {
+        Auth::getInstance()->requirePermission('journal.create');
+
         $accounts = $this->accountModel->getLeafAccounts();
 
         return $this->render('journal/create', [
@@ -74,6 +85,7 @@ class JournalController extends BaseController
      */
     public function store(): Response
     {
+        Auth::getInstance()->requirePermission('journal.create');
         $this->validateCsrf();
 
         $entryDate   = trim((string) $this->request->post('entry_date', ''));
@@ -173,6 +185,11 @@ class JournalController extends BaseController
      */
     public function show(string $id): Response
     {
+        Auth::getInstance()->requirePermission('journal.view');
+        $canCreate = Auth::getInstance()->hasPermission('journal.create');
+        $canPost = Auth::getInstance()->hasPermission('journal.post');
+        $canVoid = Auth::getInstance()->hasPermission('journal.void');
+
         $entry = $this->journalModel->getWithLines((int) $id);
 
         if ($entry === null) {
@@ -194,6 +211,9 @@ class JournalController extends BaseController
             'entry'          => $entry,
             'reversingEntry' => $reversingEntry,
             'reversedBy'     => $reversedBy,
+            'canCreate'      => $canCreate,
+            'canPost'        => $canPost,
+            'canVoid'        => $canVoid,
         ]);
     }
 
@@ -202,6 +222,7 @@ class JournalController extends BaseController
      */
     public function post(string $id): Response
     {
+        Auth::getInstance()->requirePermission('journal.post');
         $this->validateCsrf();
 
         try {
@@ -219,6 +240,7 @@ class JournalController extends BaseController
      */
     public function void(string $id): Response
     {
+        Auth::getInstance()->requirePermission('journal.void');
         $this->validateCsrf();
 
         $voidReason = trim((string) $this->request->post('void_reason', ''));

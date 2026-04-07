@@ -14,9 +14,11 @@ $statusBadges = [
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0">Journal Entries</h4>
+    <?php if ($canCreate ?? false): ?>
     <a href="/journal/create" class="btn btn-dark" style="border-radius: 0;">
         <i class="bi bi-plus-lg me-1"></i> New Entry
     </a>
+    <?php endif; ?>
 </div>
 
 <!-- Filter Bar -->

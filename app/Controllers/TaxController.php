@@ -9,6 +9,7 @@ use DoubleE\Models\Account;
 use DoubleE\Models\TaxRate;
 use DoubleE\Models\TaxGroup;
 use DoubleE\Services\TaxService;
+use DoubleE\Core\Auth;
 
 class TaxController extends BaseController
 {
@@ -31,6 +32,9 @@ class TaxController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('accounts.view');
+        $canCreate = Auth::getInstance()->hasPermission('accounts.create');
+
         $rates = $this->taxRateModel->getAll();
         $groups = $this->taxGroupModel->getAll();
 
@@ -38,6 +42,7 @@ class TaxController extends BaseController
             'pageTitle' => 'Tax Management',
             'rates'     => $rates,
             'groups'    => $groups,
+            'canCreate' => $canCreate,
         ]);
     }
 
@@ -46,6 +51,8 @@ class TaxController extends BaseController
      */
     public function createRate(): Response
     {
+        Auth::getInstance()->requirePermission('accounts.create');
+
         $accounts = $this->accountModel->getLeafAccounts();
 
         return $this->render('tax/create-rate', [
@@ -59,6 +66,7 @@ class TaxController extends BaseController
      */
     public function storeRate(): Response
     {
+        Auth::getInstance()->requirePermission('accounts.create');
         $this->validateCsrf();
 
         $name      = trim((string) $this->request->post('name', ''));
@@ -108,6 +116,8 @@ class TaxController extends BaseController
      */
     public function createGroup(): Response
     {
+        Auth::getInstance()->requirePermission('accounts.create');
+
         $rates = $this->taxRateModel->getAll();
 
         return $this->render('tax/create-group', [
@@ -121,6 +131,7 @@ class TaxController extends BaseController
      */
     public function storeGroup(): Response
     {
+        Auth::getInstance()->requirePermission('accounts.create');
         $this->validateCsrf();
 
         $name     = trim((string) $this->request->post('name', ''));

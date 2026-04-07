@@ -17,6 +17,7 @@ $statusBadges = [
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0">Invoices</h4>
+    <?php if ($canCreate ?? false): ?>
     <div class="d-flex gap-2">
         <a href="/invoices/create?type=invoice" class="btn btn-dark" style="border-radius: 0;">
             <i class="bi bi-plus-lg me-1"></i> New Invoice
@@ -25,6 +26,7 @@ $statusBadges = [
             <i class="bi bi-plus-lg me-1"></i> New Bill
         </a>
     </div>
+    <?php endif; ?>
 </div>
 
 <!-- Filter Bar -->

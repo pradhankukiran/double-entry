@@ -152,7 +152,7 @@ class LedgerService
                 'debit'          => $row['debit'],
                 'credit'         => $row['credit'],
                 'description'    => $row['line_description'],
-                'line_number'    => (int) $row['line_number'],
+                'line_order'     => (int) ($row['line_order'] ?? 0),
             ];
         }
 

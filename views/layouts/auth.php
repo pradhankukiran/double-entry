@@ -14,7 +14,10 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-5">
                 <div class="text-center mb-4">
-                    <h1 class="fw-bold">Double-E</h1>
+                    <div class="d-inline-flex align-items-center justify-content-center gap-3">
+                        <img src="/assets/images/logo.svg" alt="Double-E" width="42" height="42">
+                        <h1 class="fw-bold mb-0">Double-E</h1>
+                    </div>
                     <p class="text-muted">Double-Entry Accounting</p>
                 </div>
                 <?= $content ?? '' ?>

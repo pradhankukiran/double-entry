@@ -8,9 +8,11 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0">Bank Accounts</h4>
+    <?php if ($canCreate ?? false): ?>
     <a href="/banking/accounts/create" class="btn btn-dark" style="border-radius: 0;">
         <i class="bi bi-plus-lg me-1"></i> Add Bank Account
     </a>
+    <?php endif; ?>
 </div>
 
 <div class="card border-0 shadow-sm" style="border-radius: 0;">

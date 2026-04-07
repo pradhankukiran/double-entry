@@ -8,6 +8,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0">Tax Management</h4>
+    <?php if ($canCreate ?? false): ?>
     <div class="d-flex gap-2">
         <a href="/tax/rates/create" class="btn btn-dark" style="border-radius: 0;">
             <i class="bi bi-plus-lg me-1"></i> New Tax Rate
@@ -16,6 +17,7 @@
             <i class="bi bi-plus-lg me-1"></i> New Tax Group
         </a>
     </div>
+    <?php endif; ?>
 </div>
 
 <!-- Tax Rates Section -->

@@ -30,9 +30,11 @@ $typeLabels = [
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0">Recurring Transactions</h4>
+    <?php if ($canCreate ?? false): ?>
     <a href="/recurring/create" class="btn btn-dark" style="border-radius: 0;">
         <i class="bi bi-plus-lg me-1"></i> New Template
     </a>
+    <?php endif; ?>
 </div>
 
 <div class="card border-0 shadow-sm" style="border-radius: 0;">
@@ -80,7 +82,7 @@ $typeLabels = [
                                 <a href="/recurring/<?= (int) $tpl['id'] ?>" class="btn btn-sm btn-outline-dark me-1" style="border-radius: 0;" title="View">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                <?php if (($tpl['status'] ?? '') === 'active'): ?>
+                                <?php if (($tpl['status'] ?? '') === 'active' && ($canCreate ?? false)): ?>
                                     <form method="POST" action="/recurring/<?= (int) $tpl['id'] ?>/run" class="d-inline">
                                         <?= \DoubleE\Core\Csrf::field() ?>
                                         <button type="submit"

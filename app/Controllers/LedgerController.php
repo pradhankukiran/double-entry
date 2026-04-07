@@ -7,6 +7,7 @@ namespace DoubleE\Controllers;
 use DoubleE\Core\Response;
 use DoubleE\Models\Account;
 use DoubleE\Services\LedgerService;
+use DoubleE\Core\Auth;
 
 class LedgerController extends BaseController
 {
@@ -25,6 +26,8 @@ class LedgerController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('journal.view');
+
         $dateFrom = trim((string) $this->request->get('date_from', ''));
         $dateTo   = trim((string) $this->request->get('date_to', ''));
 
@@ -53,6 +56,8 @@ class LedgerController extends BaseController
      */
     public function account(string $id): Response
     {
+        Auth::getInstance()->requirePermission('journal.view');
+
         $account = $this->accountModel->find((int) $id);
 
         if ($account === null) {

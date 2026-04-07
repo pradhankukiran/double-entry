@@ -7,6 +7,7 @@ namespace DoubleE\Controllers;
 use DoubleE\Core\Response;
 use DoubleE\Models\FiscalYear;
 use DoubleE\Services\FiscalYearService;
+use DoubleE\Core\Auth;
 
 class FiscalYearController extends BaseController
 {
@@ -25,6 +26,8 @@ class FiscalYearController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('accounts.view');
+
         $fiscalYears = $this->fiscalYearModel->getAllWithPeriods();
 
         return $this->render('fiscal-years/index', [
@@ -38,6 +41,8 @@ class FiscalYearController extends BaseController
      */
     public function create(): Response
     {
+        Auth::getInstance()->requirePermission('accounts.create');
+
         return $this->render('fiscal-years/create', [
             'pageTitle' => 'Create Fiscal Year',
         ]);
@@ -48,6 +53,7 @@ class FiscalYearController extends BaseController
      */
     public function store(): Response
     {
+        Auth::getInstance()->requirePermission('accounts.create');
         $this->validateCsrf();
 
         $name = trim((string) $this->request->post('name', ''));

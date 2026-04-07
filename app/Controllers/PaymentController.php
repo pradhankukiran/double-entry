@@ -10,6 +10,7 @@ use DoubleE\Models\Contact;
 use DoubleE\Models\Invoice;
 use DoubleE\Models\Payment;
 use DoubleE\Services\PaymentService;
+use DoubleE\Core\Auth;
 
 class PaymentController extends BaseController
 {
@@ -34,6 +35,9 @@ class PaymentController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('invoices.view');
+        $canCreate = Auth::getInstance()->hasPermission('invoices.create');
+
         $type      = trim((string) $this->request->get('type', ''));
         $status    = trim((string) $this->request->get('status', ''));
         $contactId = trim((string) $this->request->get('contact_id', ''));
@@ -53,8 +57,9 @@ class PaymentController extends BaseController
 
         return $this->render('payments/index', [
             'pageTitle' => 'Payments',
-            'payments'  => $payments,
-            'filters'   => $filters,
+            'payments'   => $payments,
+            'filters'    => $filters,
+            'canCreate'  => $canCreate,
         ]);
     }
 
@@ -63,6 +68,8 @@ class PaymentController extends BaseController
      */
     public function create(): Response
     {
+        Auth::getInstance()->requirePermission('invoices.create');
+
         $paymentType = trim((string) $this->request->get('type', 'received'));
 
         if (!in_array($paymentType, ['received', 'made'], true)) {
@@ -89,6 +96,7 @@ class PaymentController extends BaseController
      */
     public function store(): Response
     {
+        Auth::getInstance()->requirePermission('invoices.create');
         $this->validateCsrf();
 
         $paymentType    = trim((string) $this->request->post('type', 'received'));
@@ -177,6 +185,9 @@ class PaymentController extends BaseController
      */
     public function show(string $id): Response
     {
+        Auth::getInstance()->requirePermission('invoices.view');
+        $canCreate = Auth::getInstance()->hasPermission('invoices.create');
+
         $payment = $this->paymentModel->getWithAllocations((int) $id);
 
         if ($payment === null) {
@@ -190,6 +201,7 @@ class PaymentController extends BaseController
             'pageTitle' => 'Payment ' . $payment['payment_number'],
             'payment'   => $payment,
             'contact'   => $contact,
+            'canCreate' => $canCreate,
         ]);
     }
 }

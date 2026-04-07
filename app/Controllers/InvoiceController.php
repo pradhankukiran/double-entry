@@ -11,6 +11,7 @@ use DoubleE\Models\Invoice;
 use DoubleE\Models\InvoiceLine;
 use DoubleE\Models\PaymentAllocation;
 use DoubleE\Services\InvoiceService;
+use DoubleE\Core\Auth;
 
 class InvoiceController extends BaseController
 {
@@ -37,6 +38,12 @@ class InvoiceController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('invoices.view');
+        $canCreate = Auth::getInstance()->hasPermission('invoices.create');
+        $canEdit = Auth::getInstance()->hasPermission('invoices.edit');
+        $canPost = Auth::getInstance()->hasPermission('journal.post');
+        $canVoid = Auth::getInstance()->hasPermission('journal.void');
+
         $docType   = trim((string) $this->request->get('document_type', ''));
         $status    = trim((string) $this->request->get('status', ''));
         $contactId = trim((string) $this->request->get('contact_id', ''));
@@ -60,6 +67,10 @@ class InvoiceController extends BaseController
             'invoices'  => $invoices,
             'contacts'  => $contacts,
             'filters'   => $filters,
+            'canCreate' => $canCreate,
+            'canEdit'   => $canEdit,
+            'canPost'   => $canPost,
+            'canVoid'   => $canVoid,
         ]);
     }
 
@@ -68,6 +79,8 @@ class InvoiceController extends BaseController
      */
     public function create(): Response
     {
+        Auth::getInstance()->requirePermission('invoices.create');
+
         $docType = trim((string) $this->request->get('type', 'invoice'));
 
         if (!in_array($docType, ['invoice', 'bill'], true)) {
@@ -93,6 +106,7 @@ class InvoiceController extends BaseController
      */
     public function store(): Response
     {
+        Auth::getInstance()->requirePermission('invoices.create');
         $this->validateCsrf();
 
         $docType      = trim((string) $this->request->post('document_type', 'invoice'));
@@ -223,6 +237,12 @@ class InvoiceController extends BaseController
      */
     public function show(string $id): Response
     {
+        Auth::getInstance()->requirePermission('invoices.view');
+        $canCreate = Auth::getInstance()->hasPermission('invoices.create');
+        $canEdit = Auth::getInstance()->hasPermission('invoices.edit');
+        $canPost = Auth::getInstance()->hasPermission('journal.post');
+        $canVoid = Auth::getInstance()->hasPermission('journal.void');
+
         $invoice = $this->invoiceModel->getWithLines((int) $id);
 
         if ($invoice === null) {
@@ -241,6 +261,10 @@ class InvoiceController extends BaseController
             'invoice'     => $invoice,
             'contact'     => $contact,
             'allocations' => $allocations,
+            'canCreate'   => $canCreate,
+            'canEdit'     => $canEdit,
+            'canPost'     => $canPost,
+            'canVoid'     => $canVoid,
         ]);
     }
 
@@ -249,6 +273,7 @@ class InvoiceController extends BaseController
      */
     public function post(string $id): Response
     {
+        Auth::getInstance()->requirePermission('journal.post');
         $this->validateCsrf();
 
         try {
@@ -266,6 +291,7 @@ class InvoiceController extends BaseController
      */
     public function void(string $id): Response
     {
+        Auth::getInstance()->requirePermission('journal.void');
         $this->validateCsrf();
 
         try {

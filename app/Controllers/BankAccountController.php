@@ -8,6 +8,7 @@ use DoubleE\Core\Response;
 use DoubleE\Models\BankAccount;
 use DoubleE\Models\BankTransaction;
 use DoubleE\Models\Account;
+use DoubleE\Core\Auth;
 
 class BankAccountController extends BaseController
 {
@@ -28,11 +29,15 @@ class BankAccountController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('banking.view');
+        $canCreate = Auth::getInstance()->hasPermission('banking.create');
+
         $accounts = $this->bankAccountModel->getAll();
 
         return $this->render('banking/accounts/index', [
             'pageTitle' => 'Bank Accounts',
             'accounts'  => $accounts,
+            'canCreate' => $canCreate,
         ]);
     }
 
@@ -41,6 +46,8 @@ class BankAccountController extends BaseController
      */
     public function create(): Response
     {
+        Auth::getInstance()->requirePermission('banking.create');
+
         $glAccounts = $this->accountModel->getBankTypeAccounts();
 
         return $this->render('banking/accounts/create', [
@@ -54,6 +61,7 @@ class BankAccountController extends BaseController
      */
     public function store(): Response
     {
+        Auth::getInstance()->requirePermission('banking.create');
         $this->validateCsrf();
 
         $bankName     = trim((string) $this->request->post('bank_name', ''));
@@ -105,6 +113,9 @@ class BankAccountController extends BaseController
      */
     public function show(string $id): Response
     {
+        Auth::getInstance()->requirePermission('banking.view');
+        $canCreate = Auth::getInstance()->hasPermission('banking.create');
+
         $account = $this->bankAccountModel->find((int) $id);
 
         if ($account === null) {
@@ -120,6 +131,7 @@ class BankAccountController extends BaseController
             'account'      => $account,
             'glAccount'    => $glAccount,
             'transactions' => $transactions,
+            'canCreate'    => $canCreate,
         ]);
     }
 }

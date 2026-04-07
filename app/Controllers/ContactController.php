@@ -9,6 +9,7 @@ use DoubleE\Models\Contact;
 use DoubleE\Models\ContactAddress;
 use DoubleE\Models\Invoice;
 use DoubleE\Models\Payment;
+use DoubleE\Core\Auth;
 
 class ContactController extends BaseController
 {
@@ -31,6 +32,10 @@ class ContactController extends BaseController
      */
     public function index(): Response
     {
+        Auth::getInstance()->requirePermission('invoices.view');
+        $canCreate = Auth::getInstance()->hasPermission('invoices.create');
+        $canEdit = Auth::getInstance()->hasPermission('invoices.edit');
+
         $type = trim((string) $this->request->get('type', ''));
 
         $contacts = $this->contactModel->getAll(false, $type !== '' ? $type : null);
@@ -43,8 +48,10 @@ class ContactController extends BaseController
 
         return $this->render('contacts/index', [
             'pageTitle' => 'Contacts',
-            'contacts'  => $contacts,
-            'typeFilter' => $type,
+            'contacts'   => $contacts,
+            'typeFilter'  => $type,
+            'canCreate'   => $canCreate,
+            'canEdit'     => $canEdit,
         ]);
     }
 
@@ -53,6 +60,8 @@ class ContactController extends BaseController
      */
     public function create(): Response
     {
+        Auth::getInstance()->requirePermission('invoices.create');
+
         return $this->render('contacts/create', [
             'pageTitle' => 'New Contact',
         ]);
@@ -63,6 +72,7 @@ class ContactController extends BaseController
      */
     public function store(): Response
     {
+        Auth::getInstance()->requirePermission('invoices.create');
         $this->validateCsrf();
 
         $type        = trim((string) $this->request->post('type', 'customer'));
@@ -143,6 +153,10 @@ class ContactController extends BaseController
      */
     public function show(string $id): Response
     {
+        Auth::getInstance()->requirePermission('invoices.view');
+        $canCreate = Auth::getInstance()->hasPermission('invoices.create');
+        $canEdit = Auth::getInstance()->hasPermission('invoices.edit');
+
         $contact = $this->contactModel->find((int) $id);
 
         if ($contact === null) {
@@ -162,6 +176,8 @@ class ContactController extends BaseController
             'invoices'    => $invoices,
             'payments'    => $payments,
             'outstanding' => $outstanding,
+            'canCreate'   => $canCreate,
+            'canEdit'     => $canEdit,
         ]);
     }
 
@@ -170,6 +186,8 @@ class ContactController extends BaseController
      */
     public function edit(string $id): Response
     {
+        Auth::getInstance()->requirePermission('invoices.edit');
+
         $contact = $this->contactModel->find((int) $id);
 
         if ($contact === null) {
@@ -192,6 +210,7 @@ class ContactController extends BaseController
      */
     public function update(string $id): Response
     {
+        Auth::getInstance()->requirePermission('invoices.edit');
         $this->validateCsrf();
 
         $contactId = (int) $id;
