@@ -5,6 +5,16 @@
         </span>
 
         <div class="d-flex align-items-center">
+            <form action="/search" method="GET" class="d-flex me-3" style="width: 300px; position: relative;">
+                <div class="input-group input-group-sm">
+                    <input type="text" name="q" class="form-control" placeholder="Search..."
+                           value="" id="globalSearch" autocomplete="off" style="border-radius: 0;">
+                    <button class="btn btn-outline-secondary" type="submit" style="border-radius: 0;">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                <div id="searchResults" class="dropdown-menu w-100" style="display:none; border-radius: 0;"></div>
+            </form>
             <div class="dropdown">
                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                     <i class="bi bi-person-circle me-1"></i>
