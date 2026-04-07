@@ -75,4 +75,23 @@ return [
     ['method' => 'GET', 'path' => '/payments/create', 'controller' => 'PaymentController', 'action' => 'create', 'middleware' => ['AuthMiddleware']],
     ['method' => 'POST', 'path' => '/payments', 'controller' => 'PaymentController', 'action' => 'store', 'middleware' => ['AuthMiddleware']],
     ['method' => 'GET', 'path' => '/payments/{id}', 'controller' => 'PaymentController', 'action' => 'show', 'middleware' => ['AuthMiddleware']],
+
+    // Bank Accounts
+    ['method' => 'GET', 'path' => '/bank-accounts', 'controller' => 'BankAccountController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/bank-accounts/create', 'controller' => 'BankAccountController', 'action' => 'create', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/bank-accounts', 'controller' => 'BankAccountController', 'action' => 'store', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/bank-accounts/{id}', 'controller' => 'BankAccountController', 'action' => 'show', 'middleware' => ['AuthMiddleware']],
+
+    // Bank Import
+    ['method' => 'GET', 'path' => '/bank-accounts/{id}/import', 'controller' => 'BankImportController', 'action' => 'upload', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/bank-import/preview', 'controller' => 'BankImportController', 'action' => 'preview', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/bank-import/import', 'controller' => 'BankImportController', 'action' => 'import', 'middleware' => ['AuthMiddleware']],
+
+    // Reconciliation
+    ['method' => 'GET', 'path' => '/reconciliation', 'controller' => 'ReconciliationController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/reconciliation/{id}/start', 'controller' => 'ReconciliationController', 'action' => 'start', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/reconciliation', 'controller' => 'ReconciliationController', 'action' => 'create', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/reconciliation/{id}', 'controller' => 'ReconciliationController', 'action' => 'reconcile', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/reconciliation/toggle', 'controller' => 'ReconciliationController', 'action' => 'toggle', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/reconciliation/{id}/complete', 'controller' => 'ReconciliationController', 'action' => 'complete', 'middleware' => ['AuthMiddleware']],
 ];
