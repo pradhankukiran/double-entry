@@ -111,7 +111,7 @@ $isInactive = empty($account['is_active']);
                             <span class="badge text-bg-secondary" style="border-radius: 0;">Inactive</span>
                         <?php endif; ?>
                         <?php if (!empty($account['is_header'])): ?>
-                            <span class="badge text-bg-info" style="border-radius: 0;">Header</span>
+                            <span class="badge text-bg-secondary" style="border-radius: 0;">Header</span>
                         <?php endif; ?>
                         <?php if (!empty($account['is_system'])): ?>
                             <span class="badge text-bg-dark" style="border-radius: 0;">System</span>
