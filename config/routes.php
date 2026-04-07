@@ -7,7 +7,7 @@
  */
 return [
     // Home
-    ['method' => 'GET', 'path' => '/', 'controller' => 'HomeController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/', 'controller' => 'DashboardController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
 
     // Auth
     ['method' => 'GET', 'path' => '/login', 'controller' => 'AuthController', 'action' => 'showLogin'],
@@ -94,4 +94,22 @@ return [
     ['method' => 'GET', 'path' => '/reconciliation/{id}', 'controller' => 'ReconciliationController', 'action' => 'reconcile', 'middleware' => ['AuthMiddleware']],
     ['method' => 'POST', 'path' => '/reconciliation/toggle', 'controller' => 'ReconciliationController', 'action' => 'toggle', 'middleware' => ['AuthMiddleware']],
     ['method' => 'POST', 'path' => '/reconciliation/{id}/complete', 'controller' => 'ReconciliationController', 'action' => 'complete', 'middleware' => ['AuthMiddleware']],
+
+    // Tax Management
+    ['method' => 'GET', 'path' => '/tax', 'controller' => 'TaxController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/tax/rates/create', 'controller' => 'TaxController', 'action' => 'createRate', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/tax/rates', 'controller' => 'TaxController', 'action' => 'storeRate', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/tax/groups/create', 'controller' => 'TaxController', 'action' => 'createGroup', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/tax/groups', 'controller' => 'TaxController', 'action' => 'storeGroup', 'middleware' => ['AuthMiddleware']],
+
+    // Recurring Transactions
+    ['method' => 'GET', 'path' => '/recurring', 'controller' => 'RecurringController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/recurring/create', 'controller' => 'RecurringController', 'action' => 'create', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/recurring', 'controller' => 'RecurringController', 'action' => 'store', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'GET', 'path' => '/recurring/{id}', 'controller' => 'RecurringController', 'action' => 'show', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/recurring/{id}/run', 'controller' => 'RecurringController', 'action' => 'run', 'middleware' => ['AuthMiddleware']],
+
+    // Settings
+    ['method' => 'GET', 'path' => '/settings', 'controller' => 'SettingsController', 'action' => 'index', 'middleware' => ['AuthMiddleware']],
+    ['method' => 'POST', 'path' => '/settings', 'controller' => 'SettingsController', 'action' => 'update', 'middleware' => ['AuthMiddleware']],
 ];
