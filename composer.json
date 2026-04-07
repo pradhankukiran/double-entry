@@ -1,0 +1,18 @@
+{
+    "name": "double-e/accounting",
+    "description": "Production-grade double-entry accounting platform",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "DoubleE\\": ["app/", "core/"]
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}
