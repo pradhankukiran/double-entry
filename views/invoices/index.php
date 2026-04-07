@@ -17,16 +17,21 @@ $statusBadges = [
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0">Invoices</h4>
-    <?php if ($canCreate ?? false): ?>
     <div class="d-flex gap-2">
+        <a href="/export/invoices?<?= http_build_query(array_filter([
+            'document_type' => $filters['document_type'] ?? '',
+        ])) ?>" class="btn btn-sm btn-outline-secondary" style="border-radius: 0;">
+            <i class="bi bi-download me-1"></i>Export CSV
+        </a>
+        <?php if ($canCreate ?? false): ?>
         <a href="/invoices/create?type=invoice" class="btn btn-dark" style="border-radius: 0;">
             <i class="bi bi-plus-lg me-1"></i> New Invoice
         </a>
         <a href="/invoices/create?type=bill" class="btn btn-outline-dark" style="border-radius: 0;">
             <i class="bi bi-plus-lg me-1"></i> New Bill
         </a>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
 </div>
 
 <!-- Filter Bar -->

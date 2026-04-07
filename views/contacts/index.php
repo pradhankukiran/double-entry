@@ -14,11 +14,16 @@ $typeBadges = [
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0">Contacts</h4>
-    <?php if ($canCreate ?? false): ?>
-    <a href="/contacts/create" class="btn btn-dark" style="border-radius: 0;">
-        <i class="bi bi-plus-lg me-1"></i> New Contact
-    </a>
-    <?php endif; ?>
+    <div class="d-flex gap-2">
+        <a href="/export/contacts" class="btn btn-sm btn-outline-secondary" style="border-radius: 0;">
+            <i class="bi bi-download me-1"></i>Export CSV
+        </a>
+        <?php if ($canCreate ?? false): ?>
+        <a href="/contacts/create" class="btn btn-dark" style="border-radius: 0;">
+            <i class="bi bi-plus-lg me-1"></i> New Contact
+        </a>
+        <?php endif; ?>
+    </div>
 </div>
 
 <!-- Type Filter Tabs -->

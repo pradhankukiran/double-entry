@@ -14,11 +14,19 @@ $statusBadges = [
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0">Journal Entries</h4>
-    <?php if ($canCreate ?? false): ?>
-    <a href="/journal/create" class="btn btn-dark" style="border-radius: 0;">
-        <i class="bi bi-plus-lg me-1"></i> New Entry
-    </a>
-    <?php endif; ?>
+    <div class="d-flex gap-2">
+        <a href="/export/journal-entries?<?= http_build_query(array_filter([
+            'date_from' => $filters['date_from'] ?? '',
+            'date_to'   => $filters['date_to'] ?? '',
+        ])) ?>" class="btn btn-sm btn-outline-secondary" style="border-radius: 0;">
+            <i class="bi bi-download me-1"></i>Export CSV
+        </a>
+        <?php if ($canCreate ?? false): ?>
+        <a href="/journal/create" class="btn btn-dark" style="border-radius: 0;">
+            <i class="bi bi-plus-lg me-1"></i> New Entry
+        </a>
+        <?php endif; ?>
+    </div>
 </div>
 
 <!-- Filter Bar -->

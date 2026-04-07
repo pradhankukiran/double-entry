@@ -25,9 +25,14 @@ function formatAmount(float $amount): string
         <h4 class="mb-0">Trial Balance</h4>
         <p class="text-muted small mb-0">As of <?= \DoubleE\Core\View::e(date('F j, Y', strtotime($asOfDate))) ?></p>
     </div>
-    <a href="/reports" class="btn btn-outline-secondary btn-sm no-print" style="border-radius: 0;">
-        <i class="bi bi-arrow-left me-1"></i> All Reports
-    </a>
+    <div class="d-flex gap-2 no-print">
+        <a href="/export/trial-balance?as_of_date=<?= \DoubleE\Core\View::e($asOfDate) ?>" class="btn btn-sm btn-outline-secondary" style="border-radius: 0;">
+            <i class="bi bi-download me-1"></i>Export CSV
+        </a>
+        <a href="/reports" class="btn btn-outline-secondary btn-sm" style="border-radius: 0;">
+            <i class="bi bi-arrow-left me-1"></i> All Reports
+        </a>
+    </div>
 </div>
 
 <!-- Filters -->
